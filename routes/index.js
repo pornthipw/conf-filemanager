@@ -1,45 +1,32 @@
-//Add routes from other files
+var mongodb = require('mongodb');
+var BSON = require('mongodb').pure().BSON;
+var generic_pool = require('generic-pool');
 
-var csv = require('ya-csv');
-var util = require('../utils');
-var fs = require('fs');
+//var mongo_con = require('mongo-connect');
+//var config = require('../config');
+//var mongo = mongo_con.Mongo(config.mongo_connect);
 
-function csv_parser(req, res, filepath) {
-  var content = [];
-  try {
-   var reader = csv.createCsvFileReader(filepath);
-   reader.addListener('data', function(data) {
-     var list = [];
-     for(var col=0;col<data.length;col++) {
-      list.push({'value':data[col]});
-     }
-     content.push(list);
-   });
-    
-   reader.addListener('error', function() {
-     res.send(JSON.stringify({'success':false}));
-   });
+exports.uploadFile = function(req, res, next) {      
+  var db = req.db;
+  console.log("-->"+db);
+  if(req.files.file) {          
+    var gridStore = new mongo.GridStore(db, new mongo.ObjectID(),req.files.file.name, 'w', {content_type:req.files.file.type,metadata: {'title':req.body.title}});    
+    gridStore.open(function(err, gridStore) {
+      gridStore.writeFile(req.files.file.path, function(err, doc) {                
+        if(err) {          
+          res.send(JSON.stringify({'success':false}));            
+        }
 
-   reader.addListener('end', function() {
-     res.send(JSON.stringify({'success':true,'csv':content}));
-   });
-  } catch(err) {
-    res.send(JSON.stringify({'success':false}));
-  }
-}
-
-exports.uploadFile = function(req, res) {
-  if(req.files.file) {
-    if(req.body.cp874) {
-      fs.readFile(req.files.file.path, function(err, data) {
-        util.cp874_to_utf8(data, function(utftext) {
-          fs.writeFile(req.files.file.path+'_utf8', utftext, function(err) {
-            csv_parser(req, res, req.files.file.path+'_utf8');
-          });
+        gridStore.close(function(err, result) {
+          if(err) {            
+            res.send(JSON.stringify({'success':false}));             
+          }
+          console.log(JSON.stringify(result));
+          //res.send(JSON.stringify({success:true, doc:result}));  
+          res.send(JSON.stringify({'success':true,'csv':result}));                        
         });
       });
-    } else {
-      csv_parser(req, res, req.files.file.path);
-    }
+    });    
   }
-}
+};
+

@@ -4,14 +4,18 @@ var passport = require('passport');
 var mongo_con = require('mongo-connect');
 
 var userdb = require('./user_db');
-var routes = require('./routes');
+var filedb = require('./file_db');
+//var routes = require('./routes');
 var config = require('./config');
 
 var app = express();
 
 var OpenIDStrategy = require('passport-openid').Strategy;
 
+var filemanagerdb = new filedb.filemanagerdb(config.upload.mongodb);
+
 var userprofile = new userdb.userprofile(config.authorization.mongodb);
+
 var mongo = mongo_con.Mongo(config.mongo_connect);
 
 app.configure(function() {
@@ -27,8 +31,6 @@ app.configure(function() {
   app.use(passport.initialize());
   app.use(passport.session());  	
 });
-
-
 
 passport.serializeUser(function(user, done) {
   userprofile.store(user, function(exists, user) {    
@@ -81,7 +83,9 @@ app.get('/logout', function(req, res){
   res.json({"success":true});
 });
 
-app.post('/file/upload', routes.uploadFile);
+//app.post('/file/upload', routes.uploadFile);
+
+app.post('/file/upload', filemanagerdb.uploadFile);
 
 app.get('/', function(req, res) {
   res.render('index', {baseHref:config.site.baseUrl});

@@ -21,6 +21,20 @@ app.factory('Logout', function($resource) {
     return Logout ;   
 });
 
+app.factory('Admin', function($resource) {
+  var Admin = $resource(prefix + '/admin/users/:id', {
+  },
+  {update: { method:'PUT' }});
+  return Admin;
+});
+
+app.factory('Gridstore', function($resource) {
+  var Gridstore = $resource(prefix + '/file/upload', {
+  },
+  {update: { method:'PUT' }});
+  return Gridstore;
+});
+
 
 
 

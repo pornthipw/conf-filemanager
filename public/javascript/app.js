@@ -66,11 +66,12 @@ function EntryListController($scope, Entry) {
   
 }
 
-function EntryCreateController($scope, Entry) {
+function EntryCreateController($scope, Entry,$location, $routeParams,User, Logout) {
   $scope.entry = {};
   $scope.save = function() {
     Entry.save({}, $scope.entry, function(result) {
       console.log(result);
+      $location.path('/');
     });
   }; 
 }
@@ -82,22 +83,22 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout) {
       console.log($scope.entry._id);
       if (response) {
         console.log("OK");
-        //Entry.query({project_id:$scope.entry._id}, function (result) {
-          //$scope.message_list = result;
-        //});
       }
     });
     
     $scope.save = function () { 
-      Entry.save({_id:undefined},angular.extend({}, 
-        $scope.entry,
-        {_id:undefined}),function(result) { 
-          console.log(result);
-          if(result.success) {
-            $location.path('/');
-          }
-        });
-      } 
+      Entry.update({
+          id:$scope.current_id
+        }, angular.extend({}, 
+          $scope.entry, 
+          {_id:undefined,
+            id:$routeParams.id,
+          }), function(result) {      
+            if(result.success) {
+              $location.path('/');           
+            }
+      });
+    } 
       
     $scope.del = function() {
       Entry.delete({
@@ -112,16 +113,9 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout) {
     
 }
 
-function UploadController($scope,Entry) {  
+function UploadController($scope,Entry,Gridstore,$location, $routeParams,User, Logout) {  
   $scope.limit = 50;
 
-  //$scope.function_list = Entry.query({
-  //  query:'{"type":"function_entry"}'
-  //});
-  
-  //$scope.schemas = Entry.query({query:'{"type":"tb_schema"}'});
-
-  
   self.message = function(message) {
     $scope.message = message;
     setTimeout(function() {      
@@ -131,27 +125,10 @@ function UploadController($scope,Entry) {
     }, 3000);
   };
   
-/*
-  Entry.query(function(result) {
-    var schema_list = result;
-    var fields = {};
-    $scope.field_list = [];
-    angular.forEach(schema_list,function(schema,idx) {
-      angular.forEach(schema.fields, function(field, i) { 
-        if(!(field.name in fields)) {
-          fields[field.name]=[];
-        }
-        if(fields[field.name].indexOf(field.title) == -1) {
-          fields[field.name].push(field.title);
-          $scope.field_list.push(field);
-        }
-      });
-    });
-  });
-  */
   $('iframe#upload_target').load(function() {
     var contents = $('iframe#upload_target').contents();
     var data = $.parseJSON(contents.find("body")[0].innerHTML);
+    
   
   if(data.success) {
     $scope.$apply(function(){
@@ -160,7 +137,7 @@ function UploadController($scope,Entry) {
   } else {
     $scope.$apply(function() {
       $scope.success = false;
-      //$scope.message = data.message;
+      $scope.message = data.message;
     });
   }
 });
@@ -169,6 +146,7 @@ function UploadController($scope,Entry) {
     $scope.$apply(function() {
       $scope.success = true;
       $scope.theFile = element.files[0];
+      
     });
   };
 
