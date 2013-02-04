@@ -1,0 +1,22 @@
+<div class="row-fluid">
+  <div class="span12">    
+    <a href="#/entry/create"  class="pull-right btn btn-success">Insert List</a>
+    <div class="row-fluid">
+      <div class="span12">   
+        <table>
+          <tr>
+            <th>ลำดับ</th>
+            <th>ชื่อเรื่อง</th>
+            <th></th>
+          </tr>
+          <tr ng-repeat="entry in entry_list">
+              <td>{{entry.paper_id}}</td>
+              <td>{{entry.title}}</td>
+              <td><a href="#/entry/edit/{{entry._id}}" class="btn" >Edit</a></td>
+          </tr>        
+        </table>
+        
+      </div>
+    </div>    
+  </div>
+</div>
