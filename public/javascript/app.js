@@ -133,6 +133,7 @@ function UploadController($scope,Entry,Gridstore,$location, $routeParams,User, L
   if(data.success) {
     $scope.$apply(function(){
       $scope.success = true;
+      $scope.file_list = Gridstore.query(); 
     });
   } else {
     $scope.$apply(function() {
