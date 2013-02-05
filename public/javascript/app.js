@@ -26,7 +26,7 @@ app.filter('hide', function() {
 
 app.config(function($routeProvider) {
   
-  $routeProvider.when('/upload',{
+  $routeProvider.when('/upload/:id',{
     controller:UploadController, 
     templateUrl:'static/file_manager.html'
   });
@@ -63,7 +63,6 @@ function UserCtrl($scope, User, Logout) {
 function EntryListController($scope, Entry) {
   $scope.entry_list = Entry.query();
   
-  
 }
 
 function EntryCreateController($scope, Entry,$location, $routeParams,User, Logout) {
@@ -76,44 +75,46 @@ function EntryCreateController($scope, Entry,$location, $routeParams,User, Logou
   }; 
 }
 
-function EntryController($scope, Entry, $location, $routeParams,User, Logout) {
-    Entry.get({id:$routeParams.id},function (response) {
-      $scope.entry = response;
-      $scope.current_id = $scope.entry._id;
-      console.log($scope.entry._id);
-      if (response) {
-        console.log("OK");
-      }
-    });
+function EntryController($scope, Entry, $location, $routeParams,User, Logout,FileDB) {
+  Entry.get({id:$routeParams.id},function(response) {
+    $scope.entry = response;
+    $scope.current_id = $scope.entry._id;
+  });
+  
+  // listFile
+  $scope.file_list = FileDB.query(function(res) {
+    console.log(res); //{meta:{id:entry_id}}
+  });
+  /*$scope.file_list = FileDB.query({query:'{"metadata":"{"enrty_id":"$scope.current_id"}"}'},function(res) {
+    console.log(res);
+  });*/
+  
+
     
-    $scope.save = function () { 
-      Entry.update({
-          id:$scope.current_id
-        }, angular.extend({}, 
-          $scope.entry, 
-          {_id:undefined,
-            id:$routeParams.id,
-          }), function(result) {      
-            if(result.success) {
-              $location.path('/');           
-            }
+  $scope.save = function () { 
+    Entry.update({
+      id:$scope.current_id
+    },angular.extend({}, 
+      $scope.entry,{_id:undefined}),
+      function(result) {      
+        if(result.success) {
+          $location.path('/');           
+        }
       });
     } 
       
     $scope.del = function() {
       Entry.delete({
-          id:$routeParams.id
-        },function(result) {
-          console.log(result);            
-          if(result.success) {        
-              $location.path('/');
-            }
-          });
-  		}; 
-    
+        id:$routeParams.id
+      },function(result) {
+        if(result.success) {        
+          $location.path('/');
+        }
+      });
+    }; 
 }
 
-function UploadController($scope,Entry,Gridstore,$location, $routeParams,User, Logout) {  
+function UploadController($scope,Entry,$location, $routeParams,User, Logout) {  
   $scope.limit = 50;
 
   self.message = function(message) {
@@ -125,26 +126,25 @@ function UploadController($scope,Entry,Gridstore,$location, $routeParams,User, L
     }, 3000);
   };
   
+  $scope.entry_id = $routeParams.id;
+  
   $('iframe#upload_target').load(function() {
     var contents = $('iframe#upload_target').contents();
     var data = $.parseJSON(contents.find("body")[0].innerHTML);
-    
-  
-  if(data.success) {
-    $scope.$apply(function(){
-      $scope.success = true;
-      $scope.result=data.data;
-      console.log(data.data);
-      $scope.file_list = Gridstore.query(); 
-      //console.log($scope.file_list);
-    });
-  } else {
-    $scope.$apply(function() {
-      $scope.success = false;
-      $scope.message = data.message;
-    });
-  }
-});
+    if(data.success) {
+      $scope.$apply(function(){
+        $scope.success = true;
+        //console.log(data.doc);
+        //$location.path('/');
+        $location.path('/enrty/edit/'+$scope.entry_id);
+      });
+    } else {
+      $scope.$apply(function() {
+        $scope.success = false;
+        $scope.message = data.message;
+      });
+    }
+  });
 
   $scope.setFile = function(element) {
     $scope.$apply(function() {

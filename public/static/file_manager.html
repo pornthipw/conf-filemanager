@@ -35,7 +35,8 @@
          id="file_upload_form" 
          method="post" enctype="multipart/form-data" 
          action="file/upload" 
-         target="upload_target" class="form-horizontal">                      
+         target="upload_target" class="form-horizontal">  
+         <input type="hidden" name="entry"  value="{{entry_id}}" ng-model="entry">                
         <div class="btn-group">
           <button class="btn btn-success fileinput-button">
             <i class="icon-plus icon-white"></i>     
@@ -58,7 +59,6 @@
           {{theFile.name}}
         </span>
         <span ng-switch on="success">
-          {{result}}
           <span ng-switch-when="false">
             <i class="icon-info-sign"></i>
             There are error of uploading file.

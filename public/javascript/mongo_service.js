@@ -1,6 +1,6 @@
 var app = angular.module('mongo_service', ['ngResource']);
 
-//var prefix = '/apps/demo';
+//var prefix = '/apps/confile';
 var prefix = '';
 
 app.factory('Entry', function($resource) {
@@ -9,6 +9,14 @@ app.factory('Entry', function($resource) {
   },
   {update: { method:'PUT' }});
   return Entry;
+});
+
+app.factory('FileDB', function($resource) {
+  var FileDB = $resource(prefix + '/db/fs.files/:id', {    
+    id: '@id'
+  },
+  {update: { method:'PUT' }});
+  return FileDB;
 });
 
 app.factory('User', function($resource) {
@@ -28,10 +36,15 @@ app.factory('Admin', function($resource) {
   return Admin;
 });
 
+/*
 app.factory('Gridstore', function($resource) {
-  var Gridstore = $resource(prefix + '/file', {},{});
+  var Gridstore = $resource(prefix + '/file/:id', {    
+    id: '@id'
+  },
+  {update: { method:'PUT' }});
   return Gridstore;
 });
+*/
 
 
 
