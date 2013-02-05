@@ -96,12 +96,12 @@ app.get('/admin/users/:id', userprofile.get_user);
 app.put('/admin/users/:id', userprofile.update_user);
 
 app.get('/db/:collection/:id?', mongo.query);
-app.post('/db/:collection', admin_role, mongo.insert);
+app.post('/db/:collection', mongo.insert);
 
 //app.post('/mapreduce/:collection', mongo.mapreduce);
 
-app.put('/db/:collection/:id', admin_role, mongo.update);
-app.del('/db/:collection/:id', admin_role, mongo.delete);
+app.put('/db/:collection/:id', mongo.update);
+app.del('/db/:collection/:id', mongo.delete);
 
 function admin_role(req,res,next) {
   console.log('admin_role');

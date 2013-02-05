@@ -4,6 +4,15 @@ module.exports = {
     port: 27017,
     db: 'test',
   },
+  upload: {
+    mongodb:{
+     host: 'localhost',
+     port: 27017,
+     db: 'conf_file',
+     autoReconnect: true,
+     poolSize: 4
+    }
+  },
   authorization: {
     mongodb:{
      host: 'localhost',    

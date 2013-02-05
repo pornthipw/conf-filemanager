@@ -24,28 +24,26 @@ var FileManagerDb = function(config) {
 
   this.uploadFile = function(req, res) { 
     pool.acquire(function(err,db) {
-      if(err) {
-        console.log('Error :'+err);
-      }
+      var file = req.files.file
       if(req.files.file) {          
-        var gridStore = new mongodb.GridStore(db, new mongodb.ObjectID(),req.files.file.name, 'w', {content_type:req.files.file.type,metadata: {'title':req.body.title}});    
-        gridStore.open(function(err, gridStore) {
-          gridStore.writeFile(req.files.file.path, function(err, doc) {                
-            if(err) {          
-              //res.send(JSON.stringify({'success':false})); 
-              res.json({'success':false,'message':err});  
-                       
+        var gridStore = new mongodb.GridStore(db, 
+            new mongodb.ObjectID(),
+            file.name, 'w', {
+              content_type:file.type,
+              metadata: {'title':req.body.title}
             }
-    
+        );    
+        gridStore.open(function(err, gridStore) {
+          pool.release(db);
+          gridStore.writeFile(file.path, function(err, doc) { 
+            if(err) {          
+              res.send(JSON.stringify({'success':false,'message':err})); 
+            }
             gridStore.close(function(err, result) {
               if(err) {            
-                //res.send(JSON.stringify({'success':false}));    
-                res.json({'success':false,'message':err});         
+                res.send(JSON.stringify({'success':false}));    
               }
-              console.log(JSON.stringify(result));
-              //res.send(JSON.stringify({success:true, doc:result}));  
-              //res.send(JSON.stringify({'success':true,'csv':result})); 
-              res.json({'success':true, 'message':result});                       
+              res.send(JSON.stringify({success:true, doc:result}));  
             });
           });
         });    
