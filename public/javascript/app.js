@@ -79,6 +79,7 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
   Entry.get({id:$routeParams.id},function(response) {
     $scope.entry = response;
     $scope.current_id = $scope.entry._id;
+    console.log($scope.current_id);
   });
   
   // listFile
@@ -89,7 +90,13 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
     console.log(res);
   });*/
   
-
+  $scope.setFile = function(element) {
+    $scope.$apply(function() {
+      $scope.success = true;
+      $scope.theFile = element.files[0];
+      
+    });
+  };
     
   $scope.save = function () { 
     Entry.update({
@@ -114,7 +121,7 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
     }; 
 }
 
-function UploadController($scope,Entry,$location, $routeParams,User, Logout) {  
+function UploadController($scope,Entry,$location, $routeParams,User, Logout,FileDB) {  
   $scope.limit = 50;
 
   self.message = function(message) {
@@ -136,6 +143,8 @@ function UploadController($scope,Entry,$location, $routeParams,User, Logout) {
         $scope.success = true;
         //console.log(data.doc);
         //$location.path('/');
+        
+        //$location.path('/upload/'+$scope.entry_id);
         $location.path('/enrty/edit/'+$scope.entry_id);
       });
     } else {
@@ -144,12 +153,14 @@ function UploadController($scope,Entry,$location, $routeParams,User, Logout) {
         $scope.message = data.message;
       });
     }
+    $scope.file_list = FileDB.query();
   });
 
   $scope.setFile = function(element) {
     $scope.$apply(function() {
       $scope.success = true;
       $scope.theFile = element.files[0];
+      console.log($scope.theFile);
       
     });
   };
