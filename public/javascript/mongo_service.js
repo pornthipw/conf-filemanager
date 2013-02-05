@@ -29,9 +29,7 @@ app.factory('Admin', function($resource) {
 });
 
 app.factory('Gridstore', function($resource) {
-  var Gridstore = $resource(prefix + '/file/upload', {
-  },
-  {update: { method:'PUT' }});
+  var Gridstore = $resource(prefix + '/file', {},{});
   return Gridstore;
 });
 

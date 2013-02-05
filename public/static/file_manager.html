@@ -30,7 +30,7 @@
 </iframe>
 <div class="row-fluid">
   <div class="span12">    
-    <div class="form-actions" ng-hide="result">    
+    <div class="form-actions" >    
       <form class="form-inline pull-left"  
          id="file_upload_form" 
          method="post" enctype="multipart/form-data" 
@@ -58,6 +58,7 @@
           {{theFile.name}}
         </span>
         <span ng-switch on="success">
+          {{result}}
           <span ng-switch-when="false">
             <i class="icon-info-sign"></i>
             There are error of uploading file.

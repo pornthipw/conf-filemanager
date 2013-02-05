@@ -85,7 +85,10 @@ app.get('/logout', function(req, res){
 
 //app.post('/file/upload', routes.uploadFile);
 
+
+
 app.post('/file/upload', filemanagerdb.uploadFile);
+app.get('/file', filemanagerdb.listFile);
 
 app.get('/', function(req, res) {
   res.render('index', {baseHref:config.site.baseUrl});
