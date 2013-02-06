@@ -90,6 +90,8 @@ app.post('/file/upload', filemanagerdb.uploadFile);
 
 app.get('/file/:id', filemanagerdb.getFile);
 
+app.del('/file/:id', filemanagerdb.deleteFile);
+
 app.get('/', function(req, res) {
   res.render('index', {baseHref:config.site.baseUrl});
 });
@@ -132,14 +134,8 @@ app.use(function(err,req,res,next) {
   }
 });
 
-
-
-
 app.listen(config.site.port || 3000);
 
 console.log("Mongo Express server listening on port " + (config.site.port || 3000));
-
-
-
 
 //var server = app.listen(3000);

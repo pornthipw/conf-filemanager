@@ -91,6 +91,37 @@ var FileManagerDb = function(config) {
     });
   };
   
+  
+  this.deleteFile = function(req, res, next) {
+      console.log('deleteFile '+req.params.id);
+      if (req.params.id.length == 24) {
+          try {
+              fileid  = new mongodb.ObjectID.createFromHexString(req.params.id);
+              mongodb.GridStore.exist(db, fileid , function(err, exist) {   
+                  if(exist) {
+                      var gridStore = new mongodb.GridStore(db, fileid , 'w');
+                      gridStore.open(function(err, gs) {                        
+                          gs.unlink(function(err, result) { 
+                              if(!err) {                              
+                                  //res.json({'delete':req.params.id}); 
+                                  res.send(JSON.stringify({'delete':req.params.id}));   
+                                  //client.close();                                        
+                              } else {
+                                  console.log(err);
+                              }
+                          });                        
+                      });//gridStore.open()
+                  } else {
+                      console.log(fileid  +' does not exists');
+                  }
+              });
+          } catch (err) {
+              console.log(err);
+          }
+      }
+  };
+  
+  
 };
 
 exports.filemanagerdb = FileManagerDb;

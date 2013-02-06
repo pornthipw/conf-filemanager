@@ -28,38 +28,13 @@
   <div class="span12" > 
     <div class="form-actions input-append">    
       <span class="pull-left ">  
-        <a href="" ng-click="save()" class="btn btn-primary" > 
-          <i class="icon-ok icon-white"></i> Save 
-        </a>  
-        <a href="#/upload/{{current_id}}" class="btn" >
-          <i class="icon-plus"></i> Upload
-        </a>      
-      </span>  
-      <span class="pull-right">
-
-        <form class="form-inline pull-left"  
-           id="file_upload_form" 
-           method="post" enctype="multipart/form-data" 
-           action="file/upload" 
-           target="upload_target" class="form-horizontal">  
-           <input type="hidden" name="entry"  value="{{current_id}}" ng-model="entry">                
-          <div class="btn-group">
-            <button class="btn btn-success fileinput-button">
-              <i class="icon-plus icon-white"></i>     
-              Select File     
-              <input type="file" name="file" id="file" onchange="angular.element(this).scope().setFile(this)"/>          
-            </button>    
-  
-            <button type="submit" class="btn btn-primary start">
-              <i class="icon-upload icon-white"></i>          
-              Upload
-            </button>                
-          </div>    
-                               
-        </form>
-        
-      </span>  
-            
+        <a href="" ng-click="save()" class="btn"> 
+          <i class="icon-ok"></i> Save 
+        </a>
+        <a href="" ng-click="del()" class="btn btn-danger"> 
+          <i class="icon-remove icon-white"></i> Delete 
+        </a>     
+      </span>      
     </div>
   </div>
 </div>
@@ -84,7 +59,77 @@
               <div class="controls">
                 <input type="text" ng-model="entry.title">
               </div>            
-            </div>      
+            </div>    
+            <div class="control-group">
+              <label class="control-label" for="inputName">ห้องนำเสนอ</label>
+              <div class="controls">
+                <select id="inputName" placeholder="room" ng-model="entry.room">
+                      <option>ยังไม่ระบุ</option>
+                      <option ng-selected="entry.room=='QS 4401 ชั้น 4'">QS 4401 ชั้น 4</option>
+                      <option ng-selected="entry.room=='QS 4201 ชั้น 2'">QS 4201 ชั้น 2</option>
+                      <option ng-selected="entry.room=='QS 4202 ชั้น 2'">QS 4202 ชั้น 2</option>
+                      <option ng-selected="entry.room=='QS 4203 ชั้น 2'">QS 4203 ชั้น 2</option>
+                </select>
+              </div>            
+            </div> 
+            <div class="control-group">
+              <label class="control-label" for="inputName">วันที่นำเสนอ</label>
+              <div class="controls">
+                <select id="inputName" placeholder="entry_date" ng-model="entry.entry_date">
+                      <option>ยังไม่ระบุ</option>
+                      <option ng-selected="entry.entry_date=='28 กุมภาพันธ์ 2556'">28 กุมภาพันธ์ 2556</option>
+                      <option ng-selected="entry.entry_date=='1 มีนาคม 2556'">1 มีนาคม 2556</option>
+                </select>
+              </div>            
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="inputName">เวลาที่นำเสนอ </label> 
+              <div class="controls">
+                  <select id="inputName" placeholder="entry_time" ng-model="entry.entry_time">
+                      <option>ยังไม่ระบุ</option>
+                      <option ng-selected="entry.entry_time=='09.00-09.20'">09.00-09.20</option>
+                      <option ng-selected="entry.entry_time=='09.20-09.40'">09.20-09.40</option>
+                      <option ng-selected="entry.entry_time=='09.40-10.00'">09.40-10.00</option>
+                      <option ng-selected="entry.entry_time=='10.00-10.20'">10.00-10.20</option>
+                      <option ng-selected="entry.entry_time=='10.20-10.40'">10.20-10.40</option>
+                      <option ng-selected="entry.entry_time=='10.40-11.00'">10.40-11.00</option>
+                      <option ng-selected="entry.entry_time=='11.00-11.20'">11.00-11.20</option>
+                      <option ng-selected="entry.entry_time=='11.20-11.40'">11.20-11.40</option>
+                      <option ng-selected="entry.entry_time=='11.40-12.00'">11.40-12.00</option>
+                    </select>
+              </div>
+            </div>  
+            <div class="control-group">
+              <label class="control-label" for="inputName">กลุ่มสาขาวิชา</label>
+              <div class="controls">
+                <select id="inputName" placeholder="sector" ng-model="entry.sector">
+                      <option>ยังไม่ระบุ</option>
+                      <option ng-selected="entry.sector=='กลุ่มสังคมศาสตร์'">กลุ่มสังคมศาสตร์</option>
+                      <option ng-selected="entry.sector=='กลุ่มวิทยาศาสตร์สุขภาพ'">กลุ่มวิทยาศาสตร์สุขภาพ</option>
+                      <option ng-selected="entry.sector=='กลุ่มวิทยาศาสตรืและเทคโนโลยี'">กลุ่มวิทยาศาสตรืและเทคโนโลยี</option>
+                </select>
+              </div>            
+            </div> 
+            <div class="control-group">
+              <label class="control-label" for="inputName">ประเภทการนำเสนอ</label>
+              <div class="controls">
+                <select id="inputName" placeholder="sector" ng-model="entry.type">
+                      <option>ยังไม่ระบุ</option>
+                      <option ng-selected="entry.type=='การนำเสนอปากเปล่า'">การนำเสนอปากเปล่า</option>
+                      <option ng-selected="entry.type=='การนำเสนอแบบโปสเตอร์'">การนำเสนอแบบโปสเตอร์</option>
+                </select>
+              </div>            
+            </div> 
+            <div class="control-group">
+              <label class="control-label" for="inputName">สถานะการแก้ไข</label>
+              <div class="controls">
+                <select id="inputName" placeholder="status_paper" ng-model="entry.status_paper">
+                      <option>ยังไม่ระบุ</option>
+                      <option ng-selected="entry.status_paper=='ผู้นำเสนอแก้ไขครั้งสุดท้ายและส่งไฟล์word แล้ว'">ผู้นำเสนอแก้ไขครั้งสุดท้ายและส่งไฟล์word แล้ว</option>
+                      <option ng-selected="entry.status_paper=='เจ้าหน้าที่ตรวจสอบเรียบร้อยแล้ว'">เจ้าหน้าที่ตรวจสอบเรียบร้อยแล้ว</option>
+                </select>
+              </div>            
+            </div>       
           </form>
         </div>
       </div>
