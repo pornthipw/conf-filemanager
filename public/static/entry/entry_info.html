@@ -52,7 +52,6 @@
                 <i class="icon-upload icon-white"></i>          
                 Upload
               </button>    
-                          
             </div>                           
           </form>     
         </span>            
@@ -63,77 +62,53 @@
 
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span8 alert alert-info">
-      <!--Sidebar content-->
+    <div class="span12">
+      <strong>{{entry.paper_id}}: {{entry.title}}</strong>
       <div class="row-fluid">
-        <div class="span12" >
-          <div class="page-header">
-            <h2>บทความ [{{entry.paper_id}}] <small> :{{entry.title}}</small></h2>
-          </div>
+        <div class="span8">
           <dl class="dl-horizontal">
             <dt>ห้องนำเสนอ </dt>
             <dd>{{entry.room}}</dd>
-          </dl>
-          <dl class="dl-horizontal">
             <dt>วันที่นำเสนอ </dt>
             <dd>{{entry.entry_date}}</dd>
-          </dl>
-          <dl class="dl-horizontal">
             <dt>เวลาที่นำเสนอ  </dt>
             <dd>{{entry.entry_time}}</dd>
-          </dl>
-          <dl class="dl-horizontal">
             <dt>กลุ่มสาขาวิชา</dt>
             <dd>{{entry.sector}}</dd>
-          </dl>
-          <dl class="dl-horizontal">
             <dt>ประเภทการนำเสนอ</dt>
             <dd>{{entry.type}}</dd>
-          </dl>
-          <dl class="dl-horizontal">
             <dt>สถานะการแก้ไข</dt>
-            <dd> {{entry.status_paper}}</dd>
+            <dd>{{entry.status_paper}}</dd>
           </dl>
         </div>
-      </div>
-      <!--End Sidebar content-->
-    </div>
-
-    <div class="span4">
-      <!--Body content-->
-      <div class="row-fluid">
-        <div class="span12" >       
-          <span class="pull-right"> 
-            <iframe id="upload_target" 
-              name="upload_target" 
-              style="width:0;height:0;border:0px solid #fff;"> 
-            </iframe>
-            <span ng-show="theFile">
-              {{theFile.name}} <br>
-            </span>
+        <div class="span4">
+          <span ng-show="theFile">
+            Select <i class="icon-file"></i> 
+            <strong>{{theFile.name}}</strong> 
             <span ng-switch on="success">
               <span ng-switch-when="false">
                 <i class="icon-info-sign"></i>
                 There are error of uploading file.
               </span>          
             </span>  
-          <span >
-          <span class="pull-right"> </span>
-          <span class="pull-right">
-            <table class="table">
-              <tr ng-repeat="file in file_list">
-                <td>
-                  <a href="file/{{file._id}}" target="_blank"><i class="icon-file"></i> {{file.filename}}</a>
-                  <a href="" target="_blank" ng-click="del(file._id)"> <i class="icon-remove"></i></a>
-                </td>
-              </tr>
-            </table>
+          </span>
+          <ul class="well unstyled">
+            <li ng-repeat="file in file_list">
+              <a href="file/{{file._id}}" target="_blank">
+                 <i class="icon-file"></i> {{file.filename}}
+              </a>
+              <a href="" target="_blank" ng-click="del(file._id)"> 
+                 <i class="icon-remove"></i>
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
-       <!--End Body content-->   
     </div>
-    
-  </div><!---  <div class="row-fluid">---->
-</div><!--<div class="container-fluid">--->
+  </div>
+</div>
 
-
+<iframe id="upload_target" 
+   name="upload_target" 
+   style="width:0;height:0;border:0px solid #fff;"> 
+</iframe>
