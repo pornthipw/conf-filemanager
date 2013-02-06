@@ -25,23 +25,40 @@
   }
 </style>
 <div class="row-fluid">
-  <div class="span12" > 
-    <div class="form-actions input-append">    
-      <span class="pull-left ">  
-        <a href="" ng-click="save()" class="btn"> 
-          <i class="icon-ok"></i> Save 
-        </a>
-        <a href="" ng-click="del()" class="btn btn-danger"> 
-          <i class="icon-remove icon-white"></i> Delete 
-        </a>     
-      </span>      
+  <div class="span12" ng-hide="user.user">
+    <div class="alert">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <strong>Warning!</strong> The system requires you to sign on
     </div>
   </div>
 </div>
 
-<div class="container-fluid">
+<div class="container-fluid" ng-show="user.user">
+  <div class="row-fluid" >
+    <div class="span12" > 
+      <div class="form-actions input-append">    
+        <span class="pull-left ">  
+          <a href="" ng-click="view_info()" class="btn"> 
+            <i class="icon-backward"></i> Back
+          </a>
+             
+        </span>
+        <span class="pull-right">
+          <a href="" ng-click="save()" class="btn"> 
+            <i class="icon-ok"></i> Save 
+          </a>
+          <a href="" ng-click="del()" class="btn btn-danger"> 
+            <i class="icon-remove icon-white"></i> Delete 
+          </a>  
+        </span>      
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" ng-show="user.user">
   <div class="row-fluid">
-    <div class="span6">
+    <div class="span8">
       <!--Sidebar content-->
       <div class="row-fluid">
         <div class="span12" > 
@@ -136,31 +153,35 @@
       <!--End Sidebar content-->
     </div>
 
-    <div class="span6">
+    <div class="span4">
       <!--Body content-->
       <div class="row-fluid">
-        <div class="span12" > 
-                
-          <span class="pull-right "> 
-                  <iframe id="upload_target" 
-          name="upload_target" 
-          style="width:0;height:0;border:0px solid #fff;"> 
-        </iframe>
+        <div class="span12" >       
+          <span class="pull-right"> 
+            <iframe id="upload_target" 
+              name="upload_target" 
+              style="width:0;height:0;border:0px solid #fff;"> 
+            </iframe>
             <span ng-show="theFile">
-              {{theFile.name}}
+              {{theFile.name}} <br>
             </span>
             <span ng-switch on="success">
               <span ng-switch-when="false">
                 <i class="icon-info-sign"></i>
                 There are error of uploading file.
               </span>          
-            </span> 
-            <ul>       
-              <li ng-repeat="file in file_list">
-                <a href="file/{{file._id}}" target="_blank"> {{file.filename}}</a>
-              </li>
-            </ul>   
-          </span>          
+            </span>  
+          <span >
+          <span class="pull-right"> </span>
+          <span class="pull-right">
+            <table class="table">
+              <tr ng-repeat="file in file_list">
+                <td>
+                  <a href="file/{{file._id}}" target="_blank"> {{file.filename}}</a>
+                  <a href="" target="_blank" ng-click="del(file._id)"> <i class="icon-remove"></i></a>
+                </td>
+              </tr>
+            </table>
         </div>
       </div>
        <!--End Body content-->   

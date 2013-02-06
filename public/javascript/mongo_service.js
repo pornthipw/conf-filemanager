@@ -45,6 +45,10 @@ app.factory('Gridstore', function($resource) {
   return Gridstore;
 });
 */
+app.factory('GridDB', function($resource) {
+    var GridDB  = $resource('file/:id', {id:'@id'},{});                 
+    return GridDB;
+});
 
 
 

@@ -2,17 +2,19 @@
   <div class="span12"> 
     <div class="input-prepend">
       <span class="add-on"><i class="icon-search"></i></span>
-      <input class="span2" id="prependedInput" type="text" placeholder="Search" ng-model="search">
+      <input class="span2" id="prependedInput" 
+          type="text" placeholder="Search" ng-model="search">
+       <a href="#/entry/create"  ><i class="icon-plus-sign"></i></a>
     </div>
  
-    <a href="#/entry/create"  class="pull-right btn btn-success">Insert List</a>
+   
     <div class="row-fluid">
       <div class="span12">   
         <table class="table table-striped">
           <tr>
             <th>ลำดับ
-              <a href="" ng-click="predicate = 'paper_id'; reverse=false">Up</a>
-              <a href="" ng-click="predicate = 'paper_id'; reverse=true">Down</a>
+              <a href="" ng-click="predicate = 'paper_id'; reverse=false"><i class="icon-chevron-up"></i></a>
+              <a href="" ng-click="predicate = 'paper_id'; reverse=true"><i class="icon-chevron-down"></i></a>
             </th>
             <th>ชื่อเรื่อง</th>
             <th></th>
@@ -24,7 +26,7 @@
               <td>{{entry.title}}</td>   
               <td>{{entry.type}}</td>                    
               <td><a href="#/entry/info/{{entry._id}}" ><!--<a href="#/entry/edit/{{entry._id}}" >-->
-              <i class="icon-edit"></i></a></td>
+              <i class="icon-search"></i></a></td>
           </tr>        
         </table>
         

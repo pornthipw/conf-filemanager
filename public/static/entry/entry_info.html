@@ -24,131 +24,110 @@
     color: grey;
   }
 </style>
-<div class="row-fluid">
-  <div class="span12" > 
-    <div class="form-actions input-append">    
-      <span class="pull-left ">  
-        <href=""  class="btn" ng-click="edit_entry()"> 
-          <i class="icon-ok"></i> Edit
-        </a>  
-      </span>  
-      <span class="pull-right">
-
-        <form class="form-inline pull-left"  
-           id="file_upload_form" 
-           method="post" enctype="multipart/form-data" 
-           action="file/upload" 
-           target="upload_target" class="form-horizontal"  >  
-           <input type="hidden" name="entry"  value="{{entry._id}}" ng-model="entry">                
-          <div class="btn-group">
-            <button class="btn btn-success fileinput-button">
-              <i class="icon-plus icon-white"></i>     
-              Select File     
-              <input type="file" name="file" id="file" onchange="angular.element(this).scope().setFile(this)"/ >          
-            </button>    
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12" > 
+      <div class="form-actions input-append">    
+        <span class="pull-left " ng-show="user.user">  
+          <href=""  class="btn" ng-click="edit_entry()"> 
+            <i class="icon-edit"></i> Edit
+          </a>  
+        </span>  
+        <span class="pull-right">
+          <form class="form-inline pull-left"  
+             id="file_upload_form" 
+             method="post" enctype="multipart/form-data" 
+             action="file/upload" 
+             target="upload_target" class="form-horizontal"  >  
+            <input type="hidden" name="entry"  value="{{entry._id}}" ng-model="entry">                
+            <div class="btn-group">
+              
+              <button class="btn btn-success fileinput-button">
+                <i class="icon-plus icon-white"></i>     
+                Select File     
+                <input type="file" name="file" id="file" onchange="angular.element(this).scope().setFile(this)"/ >          
+              </button>    
   
-            <button type="submit" class="btn btn-primary start">
-              <i class="icon-upload icon-white"></i>          
-              Upload
-            </button>                
-          </div>    
-                               
-        </form>
-        
-      </span>  
-            
+              <button type="submit" class="btn btn-primary start">
+                <i class="icon-upload icon-white"></i>          
+                Upload
+              </button>    
+                          
+            </div>                           
+          </form>     
+        </span>            
+      </div>
     </div>
   </div>
 </div>
 
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span6">
+    <div class="span8 alert alert-info">
       <!--Sidebar content-->
       <div class="row-fluid">
-        <div class="span12" > 
-          <form class="form-horizontal"> 
-            <div class="control-group">
-              <label class="control-label" for="inputName">ลำดับที่บทความ </label>
-              <div class="controls">
-                <div class="control-group input-append">
-                  {{entry.paper_id}}
-                </div>
-              </div>
-            </div>
-            <div class="control-group">
-              <label class="control-label" for="inputName">ชื่อเรื่อง </label>
-              <div class="controls">
-                {{entry.title}}
-              </div>            
-            </div>    
-            <div class="control-group">
-              <label class="control-label" for="inputName">ห้องนำเสนอ</label>
-              <div class="controls">
-                {{entry.room}}
-              </div>            
-            </div> 
-            <div class="control-group">
-              <label class="control-label" for="inputName">วันที่นำเสนอ</label>
-              <div class="controls">
-                {{entry.entry_date}}
-              </div>            
-            </div>
-            <div class="control-group">
-              <label class="control-label" for="inputName">เวลาที่นำเสนอ </label> 
-              <div class="controls">
-                  {{entry.entry_time}}
-              </div>
-            </div>  
-            <div class="control-group">
-              <label class="control-label" for="inputName">กลุ่มสาขาวิชา</label>
-              <div class="controls">
-                {{entry.sector}}
-              </div>            
-            </div> 
-            <div class="control-group">
-              <label class="control-label" for="inputName">ประเภทการนำเสนอ</label>
-              <div class="controls">
-                {{entry.type}}
-              </div>            
-            </div> 
-            <div class="control-group">
-              <label class="control-label" for="inputName">สถานะการแก้ไข</label>
-              <div class="controls">
-                {{entry.status_paper}}
-              </div>            
-            </div>       
-          </form>
+        <div class="span12" >
+          <div class="page-header">
+            <h2>บทความ [{{entry.paper_id}}] <small> :{{entry.title}}</small></h2>
+          </div>
+          <dl class="dl-horizontal">
+            <dt>ห้องนำเสนอ </dt>
+            <dd>{{entry.room}}</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>วันที่นำเสนอ </dt>
+            <dd>{{entry.entry_date}}</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>เวลาที่นำเสนอ  </dt>
+            <dd>{{entry.entry_time}}</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>กลุ่มสาขาวิชา</dt>
+            <dd>{{entry.sector}}</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>ประเภทการนำเสนอ</dt>
+            <dd>{{entry.type}}</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>สถานะการแก้ไข</dt>
+            <dd> {{entry.status_paper}}</dd>
+          </dl>
         </div>
       </div>
       <!--End Sidebar content-->
     </div>
 
-    <div class="span6">
+    <div class="span4">
       <!--Body content-->
       <div class="row-fluid">
-        <div class="span12" > 
-                
-          <span class="pull-right "> 
-                  <iframe id="upload_target" 
-          name="upload_target" 
-          style="width:0;height:0;border:0px solid #fff;"> 
-        </iframe>
+        <div class="span12" >       
+          <span class="pull-right"> 
+            <iframe id="upload_target" 
+              name="upload_target" 
+              style="width:0;height:0;border:0px solid #fff;"> 
+            </iframe>
             <span ng-show="theFile">
-              {{theFile.name}}
+              {{theFile.name}} <br>
             </span>
             <span ng-switch on="success">
               <span ng-switch-when="false">
                 <i class="icon-info-sign"></i>
                 There are error of uploading file.
               </span>          
-            </span> 
-            <ul>       
-              <li ng-repeat="file in file_list">
-                <a href="file/{{file._id}}" target="_blank"> {{file.filename}}</a>
-              </li>
-            </ul>   
-          </span>          
+            </span>  
+          <span >
+          <span class="pull-right"> </span>
+          <span class="pull-right">
+            <table class="table">
+              <tr ng-repeat="file in file_list">
+                <td>
+                  <a href="file/{{file._id}}" target="_blank"><i class="icon-file"></i> {{file.filename}}</a>
+                  <a href="" target="_blank" ng-click="del(file._id)"> <i class="icon-remove"></i></a>
+                </td>
+              </tr>
+            </table>
         </div>
       </div>
        <!--End Body content-->   

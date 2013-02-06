@@ -92,7 +92,11 @@ var FileManagerDb = function(config) {
   };
   
   
-  this.deleteFile = function(req, res, next) {
+  this.deleteFile = function(req, res) {
+    pool.acquire(function(err,db) {
+      if(err) {
+        console.log('Error :'+err);
+      }
       console.log('deleteFile '+req.params.id);
       if (req.params.id.length == 24) {
           try {
@@ -100,11 +104,12 @@ var FileManagerDb = function(config) {
               mongodb.GridStore.exist(db, fileid , function(err, exist) {   
                   if(exist) {
                       var gridStore = new mongodb.GridStore(db, fileid , 'w');
-                      gridStore.open(function(err, gs) {                        
+                      gridStore.open(function(err, gs) {  
+                          pool.release(db);                      
                           gs.unlink(function(err, result) { 
                               if(!err) {                              
                                   //res.json({'delete':req.params.id}); 
-                                  res.send(JSON.stringify({'delete':req.params.id}));   
+                                  res.send(JSON.stringify({'message':req.params.id}));   
                                   //client.close();                                        
                               } else {
                                   console.log(err);
@@ -119,6 +124,7 @@ var FileManagerDb = function(config) {
               console.log(err);
           }
       }
+    });
   };
   
   
