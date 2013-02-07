@@ -48,7 +48,7 @@
                 <input type="file" name="file" id="file" onchange="angular.element(this).scope().setFile(this)"/ >          
               </button>    
   
-              <button type="submit" class="btn btn-primary start">
+              <button type="btn" class="btn btn-primary start" ng-disabled="!theFile">
                 <i class="icon-upload icon-white"></i>          
                 Upload
               </button>    
@@ -68,17 +68,17 @@
         <div class="span8">
           <dl class="dl-horizontal">
             <dt>ห้องนำเสนอ </dt>
-            <dd>{{entry.room}}</dd>
+            <dd>{{entry.room}}&nbsp;</dd>
             <dt>วันที่นำเสนอ </dt>
-            <dd>{{entry.entry_date}}</dd>
+            <dd>{{entry.entry_date}}&nbsp;</dd>
             <dt>เวลาที่นำเสนอ  </dt>
-            <dd>{{entry.entry_time}}</dd>
+            <dd>{{entry.entry_time}}&nbsp;</dd>
             <dt>กลุ่มสาขาวิชา</dt>
-            <dd>{{entry.sector}}</dd>
+            <dd>{{entry.sector}}&nbsp;</dd>
             <dt>ประเภทการนำเสนอ</dt>
-            <dd>{{entry.type}}</dd>
+            <dd>{{entry.type}}&nbsp;</dd>
             <dt>สถานะการแก้ไข</dt>
-            <dd>{{entry.status_paper}}</dd>
+            <dd>{{entry.status_paper}}&nbsp;</dd>
           </dl>
         </div>
         <div class="span4">

@@ -61,7 +61,11 @@ function UserCtrl($scope, User, Logout) {
 }
 
 function EntryListController($scope, Entry) {
-  $scope.entry_list = Entry.query();
+  $scope.entry_list = Entry.query(function(response) {
+    angular.forEach(response, function(entry) {
+      entry['paper_id'] = parseInt(entry.paper_id);
+    });
+  });
   $scope.currentPage = 0;
   $scope.page = 0;
   $scope.pageSize = 2;    

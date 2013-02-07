@@ -33,22 +33,22 @@ var FileManagerDb = function(config) {
               metadata: {'entry_id':req.body.entry}
             }
         );    
-        gridStore.open(function(err, gridStore) {
-          pool.release(db);
+        gridStore.open(function(err, gridStore) {          
           gridStore.writeFile(file.path, function(err, doc) { 
             if(err) { 
-
+              pool.release(db);
               res.send(JSON.stringify({'success':false,'message':err})); 
-
+            } else {
+              gridStore.close(function(err, result) {
+                if(err) {  
+                  pool.release(db);
+                  res.send(JSON.stringify({'success':false}));    
+                } else {
+                  pool.release(db);
+                  res.send(JSON.stringify({success:true, doc:result}));  
+                }              
+              });
             }
-            gridStore.close(function(err, result) {
-              if(err) {  
-
-                res.send(JSON.stringify({'success':false}));    
-              }
-              res.send(JSON.stringify({success:true, doc:result}));  
-
-            });
           });
         });    
       }
@@ -65,12 +65,10 @@ var FileManagerDb = function(config) {
         try {
           fileid = new mongodb.ObjectID.createFromHexString(req.params.id);
           var gridStore = new mongodb.GridStore(db, fileid, 'r');
-          gridStore.open(function(err, gs) {
-            pool.release(db);
+          gridStore.open(function(err, gs) {            
             gs.collection(function(err, collection) {
-              collection.find({_id:fileid}).toArray(function(err,docs) {
-                var doc = docs[0];
-                console.log(doc.filename);
+              collection.find({_id:fileid}).toArray(function(err,docs) {                
+                var doc = docs[0];                
                 var stream = gs.stream(true);
                 res.setHeader('Content-dispostion', 'attachment;filename='+doc.filename);
                 res.setHeader('Content-type',doc.contentType);
@@ -79,13 +77,14 @@ var FileManagerDb = function(config) {
                 });
                 stream.on("end", function() {
                   res.end();
+                  pool.release(db);
                 });
               });
             });
           });
         } catch (err) {
-          }
-
+          pool.release(db);
+        }
       }    
       console.log('getFile '+req.params.id);
     });
@@ -104,18 +103,17 @@ var FileManagerDb = function(config) {
               mongodb.GridStore.exist(db, fileid , function(err, exist) {   
                   if(exist) {
                       var gridStore = new mongodb.GridStore(db, fileid , 'w');
-                      gridStore.open(function(err, gs) {  
-                          pool.release(db);                      
+                      gridStore.open(function(err, gs) {            
                           gs.unlink(function(err, result) { 
                               if(!err) {                              
-                                  //res.json({'delete':req.params.id}); 
-                                  res.send(JSON.stringify({'message':req.params.id}));   
-                                  //client.close();                                        
+                                  pool.release(db);                                                        
+                                  res.send(JSON.stringify({'message':req.params.id}));                                     
                               } else {
-                                  console.log(err);
+                                  pool.release(db);                                   
+                                  res.send(JSON.stringify({'message':'Error'}));                                                                       
                               }
                           });                        
-                      });//gridStore.open()
+                      });
                   } else {
                       console.log(fileid  +' does not exists');
                   }
@@ -125,9 +123,7 @@ var FileManagerDb = function(config) {
           }
       }
     });
-  };
-  
-  
+  };    
 };
 
 exports.filemanagerdb = FileManagerDb;
