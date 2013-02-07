@@ -40,6 +40,11 @@ app.config(function($routeProvider) {
     controller:EntryController, 
     templateUrl:'static/entry/entry_form.html'
   });
+
+  $routeProvider.when('/report', {
+    controller:ReportController, 
+    templateUrl:'static/report.html'
+  });
   
   $routeProvider.when('/', {
     controller:EntryListController, 
@@ -60,21 +65,51 @@ function UserCtrl($scope, User, Logout) {
   };
 }
 
-function EntryListController($scope, Entry) {
+function ReportController($scope, Entry) {
   $scope.type = [];
   $scope.entry_list = Entry.query(function(response) {
     var dict_type = [];
     angular.forEach(response, function(entry) {
-      entry['paper_id'] = parseInt(entry.paper_id);
       if(dict_type.indexOf(entry.type) == -1) {
-        $scope.type.push({'name':entry.type,'total':0});
+        $scope.type.push({'name':entry.type,'total':0,'sectors':[]});
         dict_type.push(entry.type);
       }
       angular.forEach($scope.type, function(e_t) {
         if(e_t.name == entry.type) {
           e_t.total+=1;
+          var sector_exists = false;
+          var sector_obj = null;
+          angular.forEach(e_t.sectors, function(sector) {
+            if(sector.name == entry.sector) { 
+              sector_obj = sector;
+              sector_exists = true;
+              sector.count +=1;
+            }
+          });
+          if(!sector_exists) {
+            sector_obj = {'name':entry.sector,'count':1,'majors':[]};
+            e_t.sectors.push(sector_obj);
+          }
+          var major_exists = false;
+          angular.forEach(sector_obj.majors, function(major) {
+            if(major.name == entry.major) { 
+              major_exists = true;
+              major.count +=1;
+            }
+          });
+          if(!major_exists) {
+            sector_obj.majors.push({'name':entry.major,'count':1});
+          }
         }
       });
+    });
+  });
+}
+
+function EntryListController($scope, Entry,$location) {
+  $scope.entry_list = Entry.query(function(response) {
+    angular.forEach(response, function(entry) {
+      entry['paper_id'] = parseInt(entry.paper_id);
     });
   });
   $scope.currentPage = 0;
@@ -87,6 +122,10 @@ function EntryListController($scope, Entry) {
       return totalPage;          
     }
   };     
+
+  $scope.show_entry = function(id) {
+    $location.path('/entry/info/'+id);
+  };
   
 }
 
@@ -194,6 +233,10 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
           function(result) {      
             if(result.success) {
               $location.path('/entry/info/'+$scope.entry._id);          
+            } else {
+              if(result.error == 401) {
+                $scope.message = 'You are not authorized to update content';
+              }
             }
           });
         } 

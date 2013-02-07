@@ -1,0 +1,25 @@
+<div class="row-fluid">
+  <div class="span12">
+    <h4>จำนวนรูปแบบการนำเสนอ</h4>
+    <ul class="unstyled">
+      <li ng-repeat="t in type">
+       {{t.name}} - {{t.total}}
+       <ul>
+         <li ng-repeat="sector in t.sectors">
+           {{sector.name}} - {{sector.count}}
+           <ul>
+             <li ng-repeat="major in sector.majors">
+               {{major.name}} - {{major.count}}
+             </li>
+           </ul>
+         </li>
+       </ul>
+      </li>
+    </ul>
+      
+    <div class="row-fluid">
+      <div class="span2">
+      </div>
+    </div>
+  </div>
+</div>

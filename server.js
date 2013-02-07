@@ -101,23 +101,20 @@ app.get('/admin/users/:id', userprofile.get_user);
 app.put('/admin/users/:id', userprofile.update_user);
 
 app.get('/db/:collection/:id?', mongo.query);
-app.post('/db/:collection', mongo.insert);
+app.post('/db/:collection', admin_role, mongo.insert);
 
 //app.post('/mapreduce/:collection', mongo.mapreduce);
 
-app.put('/db/:collection/:id', mongo.update);
-app.del('/db/:collection/:id', mongo.delete);
+app.put('/db/:collection/:id', admin_role, mongo.update);
+app.del('/db/:collection/:id', admin_role, mongo.delete);
 
 function admin_role(req,res,next) {
-  console.log('admin_role');
   if(req.user) {
     userprofile.check_role(req.user.identifier, ["admin"], function(allow) {
       if(allow) {
-        console.log("+admin");
-          next();
+        next();
       } else {
-        console.log("-admin");
-          next(new Error("401"));
+        next(new Error("401"));
       }
     });
   } else {
@@ -127,6 +124,7 @@ function admin_role(req,res,next) {
 }
 
 app.use(function(err,req,res,next) {  
+  console.log('Error 401');
   if(err instanceof Error){    
     if(err.message === '401'){
       res.json({'error':401});

@@ -9,29 +9,22 @@
  
    
     <div class="row-fluid">
-      <ul>
-        <li ng-repeat="t in type">
-          {{t.name}} - {{t.total}}
-        </li>
-      </ul>
       <div class="span12">   
-        <table class="table table-striped">
+        <table class="table table-hover">
           <tr>
             <th>ลำดับ
               <a href="" ng-click="predicate = 'paper_id'; reverse=false"><i class="icon-chevron-up"></i></a>
               <a href="" ng-click="predicate = 'paper_id'; reverse=true"><i class="icon-chevron-down"></i></a>
             </th>
             <th>ชื่อเรื่อง</th>
-            <th></th>
-            <th></th>
           </tr>
           <!--<tr ng-repeat="entry in entry_list  | orderBy:predicate:reverse | startFrom:currentPage*pageSize | limitTo:pageSize" >-->
-          <tr ng-repeat="entry in entry_list |  filter:search | orderBy:predicate:reverse  " >
-              <td>{{entry.paper_id}}</td>
-              <td>{{entry.title}}</td>   
-              <td>{{entry.type}}</td>                    
-              <td><a href="#/entry/info/{{entry._id}}" ><!--<a href="#/entry/edit/{{entry._id}}" >-->
-              <i class="icon-search"></i></a></td>
+          <tr style="cursor:pointer"
+              ng-repeat="entry in entry_list|filter:search|orderBy:predicate:reverse" ng-click="show_entry(entry._id)">
+            <td>{{entry.paper_id}}</td>
+            <td><strong>{{entry.type}}</strong><br>
+                {{entry.title}}
+            </td>   
           </tr>        
         </table>
         

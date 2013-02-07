@@ -1,36 +1,11 @@
-<style>
-  .fileinput-button {
-    position: relative;
-    overflow: hidden;
-    float: left;    
-  }
-    
-  .fileinput-button input {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    border: solid transparent;
-    border-width: 0 0 100px 200px;
-    opacity: 0;
-    filter: alpha(opacity=0);
-    -moz-transform: translate(-300px, 0) scale(4);
-    direction: ltr;
-    cursor: pointer;
-  }
-  
-  .remove-true {
-    text-decoration: line-through;
-    color: grey;
-  }
-</style>
 <div class="row-fluid">
-  <div class="span12" ng-hide="user.user">
+  <div class="span12" ng-show="message">
     <div class="alert">
       <button type="button" class="close" data-dismiss="alert">×</button>
-      <strong>Warning!</strong> The system requires you to sign on
+      <strong>Warning!</strong>  {{message}}
     </div>
   </div>
+
 </div>
 
 <div class="container-fluid" ng-show="user.user">
@@ -117,13 +92,19 @@
               </div>
             </div>  
             <div class="control-group">
+              <label class="control-label">สาขาวิชาของผู้วิจัย</label>
+              <div class="controls">
+                <input type="text" ng-model="entry.major">
+              </div>            
+            </div>    
+            <div class="control-group">
               <label class="control-label" for="inputName">กลุ่มสาขาวิชา</label>
               <div class="controls">
                 <select id="inputName" placeholder="sector" ng-model="entry.sector">
                       <option>ยังไม่ระบุ</option>
                       <option ng-selected="entry.sector=='กลุ่มสังคมศาสตร์'">กลุ่มสังคมศาสตร์</option>
                       <option ng-selected="entry.sector=='กลุ่มวิทยาศาสตร์สุขภาพ'">กลุ่มวิทยาศาสตร์สุขภาพ</option>
-                      <option ng-selected="entry.sector=='กลุ่มวิทยาศาสตรืและเทคโนโลยี'">กลุ่มวิทยาศาสตรืและเทคโนโลยี</option>
+                      <option ng-selected="entry.sector=='กลุ่มวิทยาศาสตร์และเทคโนโลยี'">กลุ่มวิทยาศาสตร์และเทคโนโลยี</option>
                 </select>
               </div>            
             </div> 
@@ -150,44 +131,8 @@
           </form>
         </div>
       </div>
-      <!--End Sidebar content-->
     </div>
-
-    <div class="span4">
-      <!--Body content-->
-      <div class="row-fluid">
-        <div class="span12" >       
-          <span class="pull-right"> 
-            <iframe id="upload_target" 
-              name="upload_target" 
-              style="width:0;height:0;border:0px solid #fff;"> 
-            </iframe>
-            <span ng-show="theFile">
-              {{theFile.name}} <br>
-            </span>
-            <span ng-switch on="success">
-              <span ng-switch-when="false">
-                <i class="icon-info-sign"></i>
-                There are error of uploading file.
-              </span>          
-            </span>  
-          <span >
-          <span class="pull-right"> </span>
-          <span class="pull-right">
-            <table class="table">
-              <tr ng-repeat="file in file_list">
-                <td>
-                  <a href="file/{{file._id}}" target="_blank"> {{file.filename}}</a>
-                  <a href="" target="_blank" ng-click="del(file._id)"> <i class="icon-remove"></i></a>
-                </td>
-              </tr>
-            </table>
-        </div>
-      </div>
-       <!--End Body content-->   
-    </div>
-    
-  </div><!---  <div class="row-fluid">---->
-</div><!--<div class="container-fluid">--->
+  </div>
+</div>
 
 
