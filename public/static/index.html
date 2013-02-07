@@ -9,6 +9,11 @@
  
    
     <div class="row-fluid">
+      <ul>
+        <li ng-repeat="t in type">
+          {{t.name}} - {{t.total}}
+        </li>
+      </ul>
       <div class="span12">   
         <table class="table table-striped">
           <tr>

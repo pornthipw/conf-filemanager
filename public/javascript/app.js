@@ -61,9 +61,20 @@ function UserCtrl($scope, User, Logout) {
 }
 
 function EntryListController($scope, Entry) {
+  $scope.type = [];
   $scope.entry_list = Entry.query(function(response) {
+    var dict_type = [];
     angular.forEach(response, function(entry) {
       entry['paper_id'] = parseInt(entry.paper_id);
+      if(dict_type.indexOf(entry.type) == -1) {
+        $scope.type.push({'name':entry.type,'total':0});
+        dict_type.push(entry.type);
+      }
+      angular.forEach($scope.type, function(e_t) {
+        if(e_t.name == entry.type) {
+          e_t.total+=1;
+        }
+      });
     });
   });
   $scope.currentPage = 0;
