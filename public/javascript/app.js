@@ -217,8 +217,37 @@ $scope.user = User.get(function(response) {
 }
 
 function EntryController($scope, Entry, $location, $routeParams,User, Logout,FileDB) {
+  
+  $scope.rooms = [
+    {name:'QS 4401 ชั้น  4', description:'', id:1, session:'การศึกษา'},
+    {name:'QS 4201 ชั้น  2', description:'',id:2, session:'สุขภาพ 1'},
+    {name:'QS 4202 ชั้น  2', description:'',id:3 , session:'สุขภาพ 2'},
+    {name:'QS 4203 ชั้น  2', description:'', id:4, session:'สุข 4'},      
+  ];
+  
+  /*
+  Entry.query(function(response) {
+      angular.forEach(response, function(entry) {        
+      });
+  });
+  */
+  /*
+  $scope.group_date = [
+    {name:'28 กุมภาพันธ์ 2556'},
+    {name:'1 มีนาคม 2556'},
+  ];
+  
+  $scope.group_time = [
+    {name:'28 กุมภาพันธ์ 2556'},
+    {name:'1 มีนาคม 2556'},
+  ];
+  */
+  
   $scope.user = User.get(function(response) {
+  var self = this;
+  self.current_entry = null;  
   if (response.user ||$scope.user ) {
+
       Entry.get({id:$routeParams.id},function(response) {
         $scope.entry = response;        
         var query_obj = {"metadata":{"entry_id":response._id}};
@@ -228,6 +257,7 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
         });
       
       });
+      
       
     
       $scope.save = function () { 

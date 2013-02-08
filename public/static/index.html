@@ -24,7 +24,7 @@
             <td>{{entry.paper_id}}</td>
             <td><strong>{{entry.type}}</strong><br>
                 {{entry.title}} <br>
-               <span class="label label-success" ng-hide="status_paper=='ไม่ระบุ' || status_paper==none">{{entry.status_paper}}</span>
+               <span class="label label-success" ng-hide="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">{{entry.status_paper}}</span>
             </td>   
           </tr>        
         </table>
