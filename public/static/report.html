@@ -1,15 +1,22 @@
 <div class="row-fluid">
   <div class="span12">
-    <h4>จำนวนรูปแบบการนำเสนอ</h4>
+    <h4>รูปแบบการนำเสนอ</h4>
     <ul class="unstyled">
       <li ng-repeat="t in type">
-       {{t.name}} - {{t.total}}
+       <h5>{{t.name}} - {{t.total}}</h5>
        <ul>
          <li ng-repeat="sector in t.sectors">
            {{sector.name}} - {{sector.count}}
            <ul>
              <li ng-repeat="major in sector.majors">
-               {{major.name}} - {{major.count}}
+               {{major.name}} - {{major.count}} 
+                <span ng-repeat="entry in major.entry_list">
+                <a href="#/entry/info/{{entry._id}}">
+                {{entry.paper_id}}
+                </a>
+                </span>
+                
+              
              </li>
            </ul>
          </li>

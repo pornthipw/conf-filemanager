@@ -95,10 +95,14 @@ function ReportController($scope, Entry) {
             if(major.name == entry.major) { 
               major_exists = true;
               major.count +=1;
+              major.entry_list.push(entry);
             }
           });
           if(!major_exists) {
-            sector_obj.majors.push({'name':entry.major,'count':1});
+            var major_obj = {'name':entry.major,'count':1};
+            major_obj['entry_list'] = [];
+            major_obj.entry_list.push(entry);
+            sector_obj.majors.push(major_obj);
           }
         }
       });
