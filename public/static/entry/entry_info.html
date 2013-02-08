@@ -63,7 +63,11 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span12">
-      <strong>{{entry.paper_id}}: {{entry.title}}</strong>
+        <h2>
+          <small>{{entry.paper_id}}: {{entry.title}}
+          </small>
+        </h2>
+      <strong></strong>
       <div class="row-fluid">
         <div class="span8">
           <dl class="dl-horizontal">
@@ -85,8 +89,9 @@
         </div>
         <div class="span4">
           <span ng-show="theFile">
-            Select <i class="icon-file"></i> 
-            <strong>{{theFile.name}}</strong> 
+            <span class="label label-success">Select </span>
+            <strong>{{theFile.name}}</strong> <i class="icon-file"></i>
+            (คลิกปุ่ม Upload) 
             <span ng-switch on="success">
               <span ng-switch-when="false">
                 <i class="icon-info-sign"></i>
@@ -94,7 +99,7 @@
               </span>          
             </span>  
           </span>
-          <ul class="well unstyled">
+          <ul class="well unstyled" ng-hide="file_list.length==0">
             <li ng-repeat="file in file_list">
               <a href="file/{{file._id}}" target="_blank">
                  <i class="icon-file"></i> {{file.filename}}
