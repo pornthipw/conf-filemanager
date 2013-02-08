@@ -74,6 +74,7 @@ function ReportController($scope, Entry) {
         $scope.type.push({'name':entry.type,'total':0,'sectors':[]});
         dict_type.push(entry.type);
       }
+      
       angular.forEach($scope.type, function(e_t) {
         if(e_t.name == entry.type) {
           e_t.total+=1;

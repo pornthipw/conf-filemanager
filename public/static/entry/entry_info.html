@@ -94,7 +94,7 @@
               </span>          
             </span>  
           </span>
-          <ul class="well unstyled">
+          <ul class="well unstyled" ng-hide="file_list.length==0">
             <li ng-repeat="file in file_list">
               <a href="file/{{file._id}}" target="_blank">
                  <i class="icon-file"></i> {{file.filename}}
