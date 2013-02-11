@@ -20,7 +20,7 @@
           </tr>
           <!--<tr ng-repeat="entry in entry_list  | orderBy:predicate:reverse | startFrom:currentPage*pageSize | limitTo:pageSize" >-->
           <tr style="cursor:pointer"
-              ng-repeat="entry in entry_list|filter:search|orderBy:predicate:reverse" ng-click="show_entry(entry._id)">
+              ng-repeat="entry in entry_list|filter:search|orderBy:predicate:reverse|orderBy:'paper_id':reverse" ng-click="show_entry(entry._id)">
             <td>
               <span class="label label-warning" ng-show="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">
                 {{entry.paper_id}}
