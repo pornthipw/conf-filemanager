@@ -80,24 +80,55 @@ function RoomController($scope, Room, Entry) {
         });
       }, 3000);
   };
+
+  self.padStr = function(i) {
+    return (i<10)?"0"+i:""+i;
+  }
+
+  self.calculate_ts = function(room) {
+    room.paper_list.sort(function(a,b) {
+      return a.paper_id - b.paper_id;
+    });
+    if(room.date) {
+      var dateParts = room.date.split("/");
+      var d = new Date(dateParts[2],(dateParts[1]-1),dateParts[0]);
+      if(room.start_time) {
+        var c_time = room.start_time;
+        angular.forEach(room.paper_list, function(paper) {
+          var time = c_time.match(/(\d+)(?::(\d\d))?\s*(p?)/);
+          paper['start'] = c_time;
+          d.setHours(parseInt(time[1]) + (time[3] ? 12 : 0) );
+          d.setMinutes(parseInt(time[2]) || 0 );
+          d.setTime(d.getTime()+1000*60*parseInt(room.time_slot));
+          c_time = self.padStr(d.getHours())+':'+
+                   self.padStr((d.getMinutes()));
+          paper['end'] = c_time;
+        });
+      }
+    }
+  };
   
   self.update_paper = function() {
-    if($scope.room) {
-      $scope.entry_list = Entry.query(function(response) {
-        angular.forEach(response, function(entry) {
-          entry['paper_id'] = parseInt(entry.paper_id);
-          angular.forEach($scope.room.paper_list, function(paper) {
-           if(entry._id == paper._id) {
-             entry.selected = true;
-           }
-          });
-        });
-      });
-    }
+   Room.query(function(room_list) {
+     $scope.entry_list = Entry.query(function(response) {
+       angular.forEach(response, function(entry) {
+         entry['paper_id'] = parseInt(entry.paper_id);
+         angular.forEach(room_list, function(room) {
+           angular.forEach(room.paper_list, function(paper) {
+             if(entry._id == paper._id) {
+               entry.selected = true;
+             }
+           });
+         });
+       });
+     });
+   });
   };  
     
   $scope.create = function () {
-      room = {};
+    Room.save({}, {name:'New Room'}, function(result) {  ;  
+      $scope.room_list = Room.query();      
+    });
   };
 
   $scope.room_list = Room.query();    
@@ -106,41 +137,53 @@ function RoomController($scope, Room, Entry) {
     $scope.room = r;    
     self.update_paper();
   };
-      
-  $scope.add_paper = function() {        
-    $scope.room['paper_list'] = [];
+  
+  $scope.remove_paper = function(paper) {
+    var paper_idx = $scope.room.paper_list.indexOf(paper);
+    $scope.room.paper_list.remove(paper_idx);
     angular.forEach($scope.entry_list, function(entry) {
-      if(entry.selected) {
-        $scope.room.paper_list.push(entry);
+      if(entry._id == paper._id) {
+        entry.selected=false;
       }
-    });    
+    });
+    self.calculate_ts($scope.room);
+    Room.update({id:$scope.room._id},angular.extend({}, 
+      $scope.room,{_id:undefined}), function(response) {
+    });                  
+  };
+
+
+      
+  $scope.add_paper = function(entry) {        
+    if(!$scope.room['paper_list']) {
+      $scope.room['paper_list'] = [];
+    }
+    $scope.room['paper_list'].push(entry);
+    self.calculate_ts($scope.room);
     Room.update({id:$scope.room._id},angular.extend({}, $scope.room,{_id:undefined}), function(response) {
-      console.log(response);
     });                  
   };
   
   $scope.save = function() {
-    if ($scope.room._id) {
-
-      Room.update({id:$scope.room._id},angular.extend({}, 
-        $scope.room,{_id:undefined}),
-        function(result) {     
-           
-          if(result.success) {
-            $scope.room = null;
-            $scope.room_list = Room.query(); 
- 
-          } else {
-            $scope.message = "Not success";    
-          }
-        }); 
-    } else {
-      Room.save({}, $scope.room, function(result) {  ;  
-        $scope.room_list = Room.query();      
-      });
-    }
+    Room.update({id:$scope.room._id},angular.extend({}, 
+      $scope.room,{_id:undefined}),
+      function(result) {     
+        if(!result.success) {
+          $scope.message = "Not success";    
+        }
+    }); 
   }; 
   
+  $scope.delete = function() {
+    Room.delete({
+      id:$scope.room._id
+    },function(result) {
+      if(result.success) {        
+        $scope.room = null;
+        $scope.room_list = Room.query();    
+      }
+    });
+  }
 
 }
 

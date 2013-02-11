@@ -25,22 +25,24 @@ var UserProfile = function(config) {
   this.store = function(user,callback) {
     pool.acquire(function(err,db) {
       if(err) {
-        console.log('Error :'+err);
-      }
-      db.collection(config.collection_name, function(err, collection) {
-        collection.findOne({'identifier':user.identifier}, function(err, profile) {          
-          if(profile) {
-            pool.release(db);
-            callback(true, profile);
-          } else {            
-            collection.insert(user, function(err, result) {                            
-              pool.release(db);
-              console.log(result);
-              callback(false, user);
-            });
-          }                    
+        console.log('Error user_db store:'+err);
+        callback(false, null);
+      } else {
+        db.collection(config.collection_name, function(err, collection) {
+          collection.findOne({'identifier':user.identifier}, 
+            function(err, profile) {          
+             if(profile) {
+               pool.release(db);
+               callback(true, profile);
+             } else {            
+              collection.insert(user, function(err, result) {                                   pool.release(db);
+                console.log(result);
+                callback(false, user);
+              });
+             }
+          });                    
         });
-      });
+      }
     });
   }; 
   
