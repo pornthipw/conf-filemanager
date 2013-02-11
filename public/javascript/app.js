@@ -137,12 +137,12 @@ function RoomController($scope, Room, Entry,User, Logout) {
   };  
     
   $scope.create = function () {
-    Room.save({}, {name:'New Room'}, function(result) {  
-      if (result.succcess) { 
-        $scope.room_list = Room.query();
-      } else {
+    Room.save({}, {name:'New Room'}, function(result) { 
+      $scope.room_list = Room.query(); 
+      self.message("You are create to new room");  
+      if (!result.succcess) { 
         if(result.error == 401) {
-          $scope.message = 'You are not authorized to update content';
+           self.message("You are not authorized to update content");  
         }
       }
     });
@@ -180,7 +180,7 @@ function RoomController($scope, Room, Entry,User, Logout) {
     Room.update({id:$scope.room._id},angular.extend({}, $scope.room,{_id:undefined}), function(response) {
       if (!response.success) {
         if(response.error == 401) {
-          $scope.message = 'You are not authorized to update content';
+          self.message("You are not authorized to update content");
         }
       }
     });                  
@@ -191,7 +191,7 @@ function RoomController($scope, Room, Entry,User, Logout) {
       $scope.room,{_id:undefined}),
       function(result) {     
         if(!result.success) {
-          $scope.message = "Not success";    
+          self.message("You are not success");   
         }
     }); 
   }; 
@@ -363,6 +363,16 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
 
   */
   
+  var self = this;
+  self.message = function(message) {
+      $scope.message = message;
+      setTimeout(function() {      
+        $scope.$apply(function() {
+          $scope.message = null;
+        });
+      }, 3000);
+  };
+  
   $scope.user = User.get(function(response) {
   var self = this;
   self.current_entry = null;  
@@ -390,7 +400,7 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
               $location.path('/entry/info/'+$scope.entry._id);          
             } else {
               if(result.error == 401) {
-                $scope.message = 'You are not authorized to update content';
+                self.message("You are not authorized to update content");  
               }
             }
           });
