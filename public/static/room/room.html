@@ -2,7 +2,7 @@
 <div class="row-fluid">
   <div class="span12" >
     <div class="row-fluid">
-      <div class="span4"> 
+      <div class="span3"> 
         <div class="row-fluid">
           <div class="span12">                                
             <form class="well">
@@ -21,6 +21,8 @@
               </div>
               <label>ชื่อห้อง</label>
               <input type="text" ng-model="room.name">
+              <label>รายละเอียด</label>
+              <input type="text" ng-model="room.description">
               <label>เสนอวันที่</label>
               <div class="input-append">
                 <input type="text" ng-model="room.date" class="input-small"
@@ -43,17 +45,37 @@
         </div>
       </div>  
       
-      <div class="span8">
+      <div class="span9">
+        <div class="row-fluid">
+          <div class="span12" ng-show="message">
+            <div class="alert">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <strong>Warning!</strong>  {{message}}
+            </div>
+          </div>
+        </div>
+        
+        <span ng-show="room" >
+          <h5>รายชื่อผลงานวิจัยที่ได้รับการพิจารณาให้นำเสนอแบบปากเปล่า (Oral Pesentation) <br>
+          {{room.description}}<br>
+          ณ ห้อง {{room.name}}
+          </h5>
+          <table class="table table-bordered table-striped table-condensed"></table>
+        
+
         <ul>
           <li ng-repeat="paper in room.paper_list">
-            {{paper.start}} - {{paper.end}} : {{paper.title}} 
+            {{paper.start}} - {{paper.end}} : {{paper.title}}
+             (<em>{{paper.author}}</em>) | {{paper.major}} 
             <a href="" ng-click="remove_paper(paper)">
               <i class="icon-remove"></i>
             </a>
-           
+                
           </li>
         </ul>
-        <table class="table table-hover">
+        <br><br>
+        </span>
+        <table class="table table-hover" ng-show="room">
           <tr>
             <th></th>
             <th>ลำดับ</th>
@@ -65,7 +87,8 @@
             <td>{{entry.paper_id}}</td>
             <td>
               <strong>{{entry.type}}</strong>
-              {{entry.sector}}: {{entry.major}}
+              <span class="text-info">{{entry.sector}}</span>: 
+              {{entry.major}}
               <br>
                 {{entry.title}} <br>
             <span class="label label-success" ng-hide="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">{{entry.status_paper}}</span>

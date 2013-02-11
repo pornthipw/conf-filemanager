@@ -114,7 +114,7 @@ function ScheduleController($scope, Entry) {
 };
 
 
-function RoomController($scope, Room, Entry) {
+function RoomController($scope, Room, Entry,User, Logout) {
   var self = this;
   self.message = function(message) {
       $scope.message = message;
@@ -170,8 +170,14 @@ function RoomController($scope, Room, Entry) {
   };  
     
   $scope.create = function () {
-    Room.save({}, {name:'New Room'}, function(result) {  ;  
-      $scope.room_list = Room.query();      
+    Room.save({}, {name:'New Room'}, function(result) {  
+      if (result.succcess) { 
+        $scope.room_list = Room.query();
+      } else {
+        if(result.error == 401) {
+          $scope.message = 'You are not authorized to update content';
+        }
+      }
     });
   };
 
@@ -205,6 +211,11 @@ function RoomController($scope, Room, Entry) {
     $scope.room['paper_list'].push(entry);
     self.calculate_ts($scope.room);
     Room.update({id:$scope.room._id},angular.extend({}, $scope.room,{_id:undefined}), function(response) {
+      if (!response.success) {
+        if(response.error == 401) {
+          $scope.message = 'You are not authorized to update content';
+        }
+      }
     });                  
   };
   
@@ -231,6 +242,7 @@ function RoomController($scope, Room, Entry) {
 
 }
 
+/*--------*/
 
 function ReportController($scope, Entry) {
   $scope.type = [];
