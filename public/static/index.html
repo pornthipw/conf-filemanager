@@ -21,10 +21,14 @@
           <!--<tr ng-repeat="entry in entry_list  | orderBy:predicate:reverse | startFrom:currentPage*pageSize | limitTo:pageSize" >-->
           <tr style="cursor:pointer"
               ng-repeat="entry in entry_list|filter:search|orderBy:predicate:reverse" ng-click="show_entry(entry._id)">
-            <td>{{entry.paper_id}}</td>
+            <td>
+              <span class="label label-warning" ng-show="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">
+                {{entry.paper_id}}
+              </span>
+              <span ng-hide="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">{{entry.paper_id}}</span>
+            </td>
             <td><strong>{{entry.type}}</strong><br>
                 {{entry.title}} <br>
-               <span class="label label-success" ng-hide="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">{{entry.status_paper}}</span>
             </td>   
           </tr>        
         </table>

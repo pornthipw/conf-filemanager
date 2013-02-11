@@ -17,8 +17,8 @@
           </a>
              
         </span>
-        <span class="pull-left">
-          <a href="" ng-click="save()" class="btn btn-info"> 
+        <span class="pull-right">
+          <a href="" ng-click="save()" class="btn"> 
             <i class="icon-ok"></i> Save 
           </a>
           <a href="" ng-click="del()" class="btn btn-danger"> 
@@ -48,7 +48,8 @@
             <div class="control-group">
               <label class="control-label" for="inputName">ชื่อเรื่อง </label>
               <div class="controls">
-                <input type="text" ng-model="entry.title">
+                <!--<input type="text" ng-model="entry.title">-->
+                <textarea rows="6" ng-model="entry.title"></textarea>
               </div>            
             </div>  
               
@@ -59,94 +60,7 @@
               </div>            
             </div>    
             
-            <div class="control-group">
-              <label class="control-label" for="inputName">ห้องนำเสนอ</label>
-              <div class="controls">
-                 <select ng-model="entry.room" ng-options="r.session for r in rooms" >
-                   <option value="">ยังไม่ระบุ</option>
-                 </select>
-                 {{entry.room.session}}
-              </div>            
-            </div>
-            <!--
-            <div class="control-group">
-              <label class="control-label" for="inputName">ห้องนำเสนอ</label>
-              <div class="controls">                
-                <select id="inputName" placeholder="room" ng-model="entry.room">
-                      <option>ยังไม่ระบุ</option>
-                      <option ng-selected="entry.room=='QS 4401 ชั้น 4'">QS 4401 ชั้น 4</option>
-                      <option ng-selected="entry.room=='QS 4201 ชั้น 2'">QS 4201 ชั้น 2</option>
-                      <option ng-selected="entry.room=='QS 4202 ชั้น 2'">QS 4202 ชั้น 2</option>
-                      <option ng-selected="entry.room=='QS 4203 ชั้น 2'">QS 4203 ชั้น 2</option>
-                </select>
-              </div>            
-            </div> 
-            -->
             
-            <div class="control-group">
-              <label class="control-label" for="inputName">วันที่นำเสนอ</label>
-              <div class="controls">
-                 <select ng-model="entry.entry_date" ng-options="d.name for d in group_date" >
-                   <option value="">ยังไม่ระบุ</option>
-                 </select>
-                 {{entry.entry_date}}
-              </div>            
-            </div>
-            
-            <!--
-            <div class="control-group">
-              <label class="control-label" for="inputName">วันที่นำเสนอ</label>
-              <div class="controls">
-                <select id="inputName" placeholder="entry_date" ng-model="entry.entry_date">
-                      <option>ยังไม่ระบุ</option>
-                      <option ng-selected="entry.entry_date=='28 กุมภาพันธ์ 2556'">28 กุมภาพันธ์ 2556</option>
-                      <option ng-selected="entry.entry_date=='1 มีนาคม 2556'">1 มีนาคม 2556</option>
-                </select>
-              </div>            
-            </div>
-            -->
-            
-            <div class="control-group">
-              <label class="control-label" for="inputName">เวลาที่นำเสนอ</label>
-              <div class="controls">
-                
-                 <select ng-model="entry.entry_time" ng-options="t.name for t in group_time" >
-                   <option value="">ยังไม่ระบุ</option>
-                 </select>
-                 {{entry.entry_time.name}}
-              </div>            
-            </div>
-            <!--
-            <div class="control-group">
-              <label class="control-label" for="inputName">เวลาที่นำเสนอ </label> 
-              <div class="controls">
-                  <select id="inputName" placeholder="entry_time" ng-model="entry.entry_time">
-                      <option>ยังไม่ระบุ</option>
-                      <option ng-selected="entry.entry_time=='09.00-09.20'">09.00-09.20</option>
-                      <option ng-selected="entry.entry_time=='09.20-09.40'">09.20-09.40</option>
-                      <option ng-selected="entry.entry_time=='09.40-10.00'">09.40-10.00</option>
-                      <option ng-selected="entry.entry_time=='10.00-10.20'">10.00-10.20</option>
-                      <option ng-selected="entry.entry_time=='10.20-10.40'">10.20-10.40</option>
-                      <option ng-selected="entry.entry_time=='10.40-11.00'">10.40-11.00</option>
-                      <option ng-selected="entry.entry_time=='11.00-11.20'">11.00-11.20</option>
-                      <option ng-selected="entry.entry_time=='11.20-11.40'">11.20-11.40</option>
-                      <option ng-selected="entry.entry_time=='11.40-12.00'">11.40-12.00</option>
-                      <option ng-selected="entry.entry_time=='13.30-13.50'">13.30-13.50</option>
-                      <option ng-selected="entry.entry_time=='13.50-14.10'">13.50-14.10</option>
-                      <option ng-selected="entry.entry_time=='14.10-14.30'">14.10-14.30</option>
-                      <option ng-selected="entry.entry_time=='14.30-14.50'">14.30-14.50</option>
-                      <option ng-selected="entry.entry_time=='14.50-15.10'">14.50-15.10</option>
-                      <option ng-selected="entry.entry_time=='15.10-15.30'">15.10-15.30</option>
-                      <option ng-selected="entry.entry_time=='15.30-15.50'">15.30-15.50</option>
-                      <option ng-selected="entry.entry_time=='15.50-16.10'">15.50-16.10</option>
-                      <option ng-selected="entry.entry_time=='16.10-16.30'">16.10-16.30</option>
-                      <option ng-selected="entry.entry_time=='16.30-16.50'">16.30-16.50</option>
-                      <option ng-selected="entry.entry_time=='16.50-17.10'">16.50-17.10</option>
-                      <option ng-selected="entry.entry_time=='17.10-17.30'">17.10-17.30</option>
-                    </select>
-              </div>
-            </div>  
-            -->
             <div class="control-group">
               <label class="control-label">สถาบัน</label>
               <div class="controls">

@@ -38,8 +38,8 @@
               <label>Time Slot</label> 
               <input type="text" class="input-small" ng-model="room.time_slot">
               <br>
-              <button type="submit" class="btn" ng-click="save()">Save</button>
-              <button type="submit" class="btn" ng-click="delete()">Delete</button>
+              <button type="submit" class="btn btn-primary" ng-click="save()">Save</button>
+              <button type="submit" class="btn btn-danger" ng-click="delete()">Delete</button>
             </form>
           </div>
         </div>
@@ -84,14 +84,18 @@
           <tr style="cursor:pointer"
             ng-repeat="entry in entry_list|orderBy:'paper_id':reverse" ng-hide="entry.selected">                
             <td><input type="checkbox" ng-model="entry.selected" ng-click="add_paper(entry)"></td>
-            <td>{{entry.paper_id}}</td>
+            <td>
+              <span class="label label-warning" ng-show="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">
+                {{entry.paper_id}}
+              </span>
+              <span ng-hide="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">{{entry.paper_id}}</span>
+            </td>
             <td>
               <strong>{{entry.type}}</strong>
               <span class="text-info">{{entry.sector}}</span>: 
               {{entry.major}}
               <br>
-                {{entry.title}} <br>
-            <span class="label label-success" ng-hide="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">{{entry.status_paper}}</span>
+                {{entry.title}}
             </td>   
           </tr>        
         </table>

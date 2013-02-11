@@ -387,60 +387,13 @@ $scope.user = User.get(function(response) {
 
 function EntryController($scope, Entry, $location, $routeParams,User, Logout,FileDB) {
   
-  $scope.rooms = [
-    {name:'QS 2201', description:'', id:1, session:'การศึกษา'},
-    {name:'QS 2202', description:'',id:2, session:'สุขภาพ 1'},
-    {name:'QS 2203', description:'',id:3 , session:'สุขภาพ 2'},
-    {name:'QS 2204', description:'', id:4, session:'สุข 4'},   
-    {name:'QS 2205', description:'', id:5, session:'สุข 5'},   
-    {name:'QS 2206', description:'', id:6, session:'สุข 6'},      
-  ];
-  
-  $scope.group_time = [
-    {name:'09.00-09.20'},
-    {name:'09.20-09.40'},
-    {name:'09.40-10.00'},
-    {name:'10.00-10.20'},
-    {name:'10.20-10.40'},
-    {name:'10.40-11.00'},
-    {name:'11.00-11.20'},
-    {name:'11.20-11.40'},
-    {name:'11.40-12.00'},
-    {name:'13.30-13.50'},
-    {name:'13.50-14.10'},
-    {name:'14.10-14.30'},
-    {name:'14.30-14.50'},
-    {name:'14.50-15.10'},
-    {name:'15.10-15.30'},
-    {name:'15.30-15.50'},
-    {name:'15.50-16.10'},
-    {name:'16.10-16.30'},
-    {name:'16.30-16.50'},
-    {name:'16.50-17.10'},
-    {name:'17.10-17.30'},
-  ];
-  
-  $scope.group_date = [
-    {name:'28 กุมภาพันธ์ 2556'},
-    {name:'1 มีนาคม 2556'},
-  ];
-  
-  /*
-  Entry.query(function(response) {
-      angular.forEach(response, function(entry) {        
-      });
-  });
-  */
+
   /*
   $scope.group_date = [
     {name:'28 กุมภาพันธ์ 2556'},
     {name:'1 มีนาคม 2556'},
   ];
-  
-  $scope.group_time = [
-    {name:'28 กุมภาพันธ์ 2556'},
-    {name:'1 มีนาคม 2556'},
-  ];
+
   */
   
   $scope.user = User.get(function(response) {
