@@ -41,11 +41,6 @@ app.config(function($routeProvider) {
     templateUrl:'static/entry/entry_form.html'
   });
   
-  $routeProvider.when('/room/create', {
-    controller:RoomCreateController, 
-    templateUrl:'static/room/room_form.html'
-  });
-  
   $routeProvider.when('/room', {
     controller:RoomController, 
     templateUrl:'static/room/room.html'
@@ -75,17 +70,6 @@ function UserCtrl($scope, User, Logout) {
   };
 }
 
-function RoomCreateController($scope, Room,$location, $routeParams,User, Logout) {
-  $scope.room = {};
-  $scope.user = User.get(function(response) {
-    if (response.user ||$scope.user ) {
-      $scope.room = {};
-  
-    }
-  });
-}
-
-
 function RoomController($scope, Room, Entry) {
   var self = this;
   self.message = function(message) {
@@ -102,16 +86,11 @@ function RoomController($scope, Room, Entry) {
       $scope.entry_list = Entry.query(function(response) {
         angular.forEach(response, function(entry) {
           entry['paper_id'] = parseInt(entry.paper_id);
-         //
-          /*if($scope.room.paper_list && $scope.room.paper_list.indexOf(entry._id) != -1) {
-            entry.selected = true;
-          }*/
-          
-          //
-           angular.forEach($scope.room.paper_list, function(paper_list) {
-             console.log(paper_list);
-             //entry.selected = true;
-            });
+          angular.forEach($scope.room.paper_list, function(paper) {
+           if(entry._id == paper._id) {
+             entry.selected = true;
+           }
+          });
         });
       });
     }
