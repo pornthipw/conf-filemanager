@@ -18,8 +18,8 @@
           </a>
              
         </span>
-        <span class="pull-right">
-          <a href="" ng-click="save()" class="btn"> 
+        <span class="pull-left">
+          <a href="" ng-click="save()" class="btn btn-info"> 
             <i class="icon-ok"></i> Save 
           </a>
           <a href="" ng-click="del()" class="btn btn-danger"> 
@@ -51,10 +51,28 @@
               <div class="controls">
                 <input type="text" ng-model="entry.title">
               </div>            
+            </div>  
+              
+            <div class="control-group">
+              <label class="control-label">ผู้วิจัย</label>
+              <div class="controls">
+                <input type="text" ng-model="entry.author">
+              </div>            
             </div>    
+            
             <div class="control-group">
               <label class="control-label" for="inputName">ห้องนำเสนอ</label>
               <div class="controls">
+                 <select ng-model="entry.room" ng-options="r.session for r in rooms" >
+                   <option value="">ยังไม่ระบุ</option>
+                 </select>
+                 {{entry.room.session}}
+              </div>            
+            </div>
+            <!--
+            <div class="control-group">
+              <label class="control-label" for="inputName">ห้องนำเสนอ</label>
+              <div class="controls">                
                 <select id="inputName" placeholder="room" ng-model="entry.room">
                       <option>ยังไม่ระบุ</option>
                       <option ng-selected="entry.room=='QS 4401 ชั้น 4'">QS 4401 ชั้น 4</option>
@@ -64,6 +82,19 @@
                 </select>
               </div>            
             </div> 
+            -->
+            
+            <div class="control-group">
+              <label class="control-label" for="inputName">วันที่นำเสนอ</label>
+              <div class="controls">
+                 <select ng-model="entry.entry_date" ng-options="d.name for d in group_date" >
+                   <option value="">ยังไม่ระบุ</option>
+                 </select>
+                 {{entry.entry_date}}
+              </div>            
+            </div>
+            
+            <!--
             <div class="control-group">
               <label class="control-label" for="inputName">วันที่นำเสนอ</label>
               <div class="controls">
@@ -74,6 +105,19 @@
                 </select>
               </div>            
             </div>
+            -->
+            
+            <div class="control-group">
+              <label class="control-label" for="inputName">เวลาที่นำเสนอ</label>
+              <div class="controls">
+                
+                 <select ng-model="entry.entry_time" ng-options="t.name for t in group_time" >
+                   <option value="">ยังไม่ระบุ</option>
+                 </select>
+                 {{entry.entry_time.name}}
+              </div>            
+            </div>
+            <!--
             <div class="control-group">
               <label class="control-label" for="inputName">เวลาที่นำเสนอ </label> 
               <div class="controls">
@@ -103,6 +147,14 @@
                     </select>
               </div>
             </div>  
+            -->
+            <div class="control-group">
+              <label class="control-label">สถาบัน</label>
+              <div class="controls">
+                <input type="text" ng-model="entry.university">
+              </div>            
+            </div>  
+            
             <div class="control-group">
               <label class="control-label">สาขาวิชาของผู้วิจัย</label>
               <div class="controls">

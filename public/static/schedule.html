@@ -1,0 +1,29 @@
+<div class="row-fluid">
+  <div class="span12">
+    รายชื่อผลงานวิจัยที่ได้รับการพิจารณาให้นำเสนอ
+    <div class="row-fluid">
+      <div class="span2">
+        <ul>
+          <li><a href="" ng-click="get_type(1)">นำเสนอแบบปากเปล่า (Oral Presentation)</a></li>
+          <li><a href="" ng-click="get_type(2)">นำเสนอแบบโปสเตอร์ (Poster Presentation)</a></li>
+        </ul>
+      </div>
+      <div class="span10">
+        <table>
+            <td>เวลา</td>
+            <td>ชื่อ-สกุล</td>
+            <td>สถาบัน</td>
+            <td>สาขา</td>
+            <td>ชื่อเรื่องภาษาไทย</td>
+          <tr ng-repeat="entry in entry_list ">
+            <td>{{entry.entry_time.name}}</td>
+            <td>{{entry.author}}</td>
+            <td>{{entry.university}}</td>
+            <td>{{entry.major}}</td>
+            <td>{{entry.title}}</td>
+            
+          </tr>
+        </table>{{type}}
+    </div>
+  </div>
+</div>

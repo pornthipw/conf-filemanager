@@ -23,7 +23,8 @@
               ng-repeat="entry in entry_list|filter:search|orderBy:predicate:reverse" ng-click="show_entry(entry._id)">
             <td>{{entry.paper_id}}</td>
             <td><strong>{{entry.type}}</strong><br>
-                {{entry.title}}
+                {{entry.title}} <br>
+               <span class="label label-success" ng-hide="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">{{entry.status_paper}}</span>
             </td>   
           </tr>        
         </table>

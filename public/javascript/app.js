@@ -46,6 +46,11 @@ app.config(function($routeProvider) {
     templateUrl:'static/report.html'
   });
   
+  $routeProvider.when('/schedule', {
+    controller:ScheduleController, 
+    templateUrl:'static/schedule.html'
+  });
+  
   $routeProvider.when('/', {
     controller:EntryListController, 
     templateUrl:'static/index.html'
@@ -65,6 +70,44 @@ function UserCtrl($scope, User, Logout) {
   };
 }
 
+function ScheduleController($scope, Entry) {
+  $scope.get_type = function (t) {
+  $scope.type = [];
+  $scope.current_t = t;
+  if ($scope.current_t =="1"){
+     var query_obj = {"type":"การนำเสนอปากเปล่า"}; 
+  } else {
+      if ($scope.current_t =="2") {
+        var query_obj = {"type":"ารนำเสนอแบบโปสเตอร์"};
+      }
+  }
+    $scope.entry_list = Entry.query({query:JSON.stringify(query_obj)},function(response) {
+      
+      var dict_type = [];
+      angular.forEach(response, function(entry) {
+        if(dict_type.indexOf(entry.type) == -1) {
+          $scope.type.push({'name':entry.type,'sectors':[]});
+          dict_type.push(entry.type);
+        }
+        
+        
+        angular.forEach($scope.type, function(e_type) {
+          //console.log("-->"+e_type.name);
+          //console.log("+"+entry.type);
+          if(e_type.name==entry.type) {
+              angular.forEach(e_type.sectors, function(sector) {
+                console.log(sector.name);
+              });
+            }
+        });
+        
+      });
+
+    });
+  } 
+};
+
+
 function ReportController($scope, Entry) {
   $scope.type = [];
   $scope.entry_list = Entry.query(function(response) {
@@ -74,6 +117,7 @@ function ReportController($scope, Entry) {
         $scope.type.push({'name':entry.type,'total':0,'sectors':[]});
         dict_type.push(entry.type);
       }
+      
       angular.forEach($scope.type, function(e_t) {
         if(e_t.name == entry.type) {
           e_t.total+=1;
@@ -95,10 +139,14 @@ function ReportController($scope, Entry) {
             if(major.name == entry.major) { 
               major_exists = true;
               major.count +=1;
+              major.entry_list.push(entry);
             }
           });
           if(!major_exists) {
-            sector_obj.majors.push({'name':entry.major,'count':1});
+            var major_obj = {'name':entry.major,'count':1};
+            major_obj['entry_list'] = [];
+            major_obj.entry_list.push(entry);
+            sector_obj.majors.push(major_obj);
           }
         }
       });
@@ -212,8 +260,68 @@ $scope.user = User.get(function(response) {
 }
 
 function EntryController($scope, Entry, $location, $routeParams,User, Logout,FileDB) {
+  
+  $scope.rooms = [
+    {name:'QS 2201', description:'', id:1, session:'การศึกษา'},
+    {name:'QS 2202', description:'',id:2, session:'สุขภาพ 1'},
+    {name:'QS 2203', description:'',id:3 , session:'สุขภาพ 2'},
+    {name:'QS 2204', description:'', id:4, session:'สุข 4'},   
+    {name:'QS 2205', description:'', id:5, session:'สุข 5'},   
+    {name:'QS 2206', description:'', id:6, session:'สุข 6'},      
+  ];
+  
+  $scope.group_time = [
+    {name:'09.00-09.20'},
+    {name:'09.20-09.40'},
+    {name:'09.40-10.00'},
+    {name:'10.00-10.20'},
+    {name:'10.20-10.40'},
+    {name:'10.40-11.00'},
+    {name:'11.00-11.20'},
+    {name:'11.20-11.40'},
+    {name:'11.40-12.00'},
+    {name:'13.30-13.50'},
+    {name:'13.50-14.10'},
+    {name:'14.10-14.30'},
+    {name:'14.30-14.50'},
+    {name:'14.50-15.10'},
+    {name:'15.10-15.30'},
+    {name:'15.30-15.50'},
+    {name:'15.50-16.10'},
+    {name:'16.10-16.30'},
+    {name:'16.30-16.50'},
+    {name:'16.50-17.10'},
+    {name:'17.10-17.30'},
+  ];
+  
+  $scope.group_date = [
+    {name:'28 กุมภาพันธ์ 2556'},
+    {name:'1 มีนาคม 2556'},
+  ];
+  
+  /*
+  Entry.query(function(response) {
+      angular.forEach(response, function(entry) {        
+      });
+  });
+  */
+  /*
+  $scope.group_date = [
+    {name:'28 กุมภาพันธ์ 2556'},
+    {name:'1 มีนาคม 2556'},
+  ];
+  
+  $scope.group_time = [
+    {name:'28 กุมภาพันธ์ 2556'},
+    {name:'1 มีนาคม 2556'},
+  ];
+  */
+  
   $scope.user = User.get(function(response) {
+  var self = this;
+  self.current_entry = null;  
   if (response.user ||$scope.user ) {
+
       Entry.get({id:$routeParams.id},function(response) {
         $scope.entry = response;        
         var query_obj = {"metadata":{"entry_id":response._id}};
@@ -223,6 +331,7 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
         });
       
       });
+      
       
     
       $scope.save = function () { 
