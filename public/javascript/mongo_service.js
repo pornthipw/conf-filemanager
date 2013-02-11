@@ -1,7 +1,7 @@
 var app = angular.module('mongo_service', ['ngResource']);
 
-var prefix = '/apps/confile';
-//var prefix = '';
+//var prefix = '/apps/confile';
+var prefix = '';
 
 app.factory('Entry', function($resource) {
   var Entry = $resource(prefix + '/db/entry/:id', {    
@@ -9,6 +9,14 @@ app.factory('Entry', function($resource) {
   },
   {update: { method:'PUT' }});
   return Entry;
+});
+
+app.factory('Room', function($resource) {
+  var Room= $resource(prefix + '/db/room/:id', {    
+    id: '@id'
+  },
+  {update: { method:'PUT' }});
+  return Room;
 });
 
 app.factory('FileDB', function($resource) {
