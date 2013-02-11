@@ -11,6 +11,14 @@ app.factory('Entry', function($resource) {
   return Entry;
 });
 
+app.factory('Room', function($resource) {
+  var Room= $resource(prefix + '/db/room/:id', {    
+    id: '@id'
+  },
+  {update: { method:'PUT' }});
+  return Room;
+});
+
 app.factory('FileDB', function($resource) {
   var FileDB = $resource(prefix + '/db/fs.files/:id', {    
     id: '@id'

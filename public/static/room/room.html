@@ -1,0 +1,119 @@
+
+<div class="row-fluid">
+  <div class="span12" >
+    <div class="row-fluid">
+      <div class="span6"> 
+      
+        <div class="row-fluid">
+          <div class="span12">                        
+          <table>
+            <tr>
+              <td><a href="" ng-click="create()" >เพิ่มข้อมูล</a></td>
+            </tr>
+            <tr ng-repeat="r in room_list" ng-hide="myForm && room">
+              <td><a href="" ng-click="select_room(r)">{{r.name}}</a></td>
+            </tr>
+          </table>
+          </div>
+        </div>
+        
+        <div class="row-fluid">
+          <div class="span12">                                
+            <form class="form-horizontal"  name ="myForm" ng-hide="!room">             
+          <div class="control-group">
+            <label class="control-label">ห้องนำเสนอ</label>
+            <div class="controls">                
+               <input type="text" ng-model="room.name">
+            </div>            
+          </div>
+          
+          <div class="control-group">
+            <label class="control-label">เสนอวันที่</label>
+            <div class="controls">
+            <input type="text" ng-model="room.date" data-date-format="dd/mm/yyyy" bs-datepicker>
+              <button type="button" class="btn" data-toggle="datepicker"><i class="icon-calendar"></i></button>    
+            </div>            
+          </div>
+                      
+          <div class="control-group">
+            <label class="control-label">เวลาเริ่มต้น </label> 
+            <div class="controls">                  
+              <input type="text" ng-model="room.start_time">
+            </div>
+          </div>  
+
+          <div class="control-group">
+            <label class="control-label" for="inputName">เวลาสิ้นสุด </label> 
+            <div class="controls">                  
+              <input type="text" ng-model="room.end_time">
+            </div>
+          </div>  
+          
+          <div class="control-group">
+            <div class="controls">              
+              <button type="submit" class="btn btn-success" ng-click="save()" >Save</button>
+              <a href="" ng-click="room = null" class="btn">Cancel</a>
+            </div>
+          </div>
+        </form>        
+        </div>
+        </div>
+        
+        <div class="row-fluid" ng-show="room" >
+          <div class="span12">                        
+            <table class="table table-hover">
+            <tr>
+              <th></th>
+              <th>ลำดับ
+                <a href="" ng-click="predicate = 'paper_id'; reverse=false"><i class="icon-chevron-up"></i></a>
+                <a href="" ng-click="predicate = 'paper_id'; reverse=true"><i class="icon-chevron-down"></i></a>
+              </th>
+              <th>ชื่อเรื่อง</th>
+            </tr>
+            <tr style="cursor:pointer"
+                ng-repeat="entry in entry_list|filter:search|orderBy:predicate:reverse" ng-hide="!entry.selected">                
+              <td><input type="checkbox" ng-model="entry.selected" ng-click="add_paper()"></td>
+              <td>{{entry.paper_id}}</td>
+              <td><strong>{{entry.type}}</strong><br>
+                  {{entry.title}} <br>
+                 <span class="label label-success" ng-hide="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">{{entry.status_paper}}</span>
+              </td>   
+            </tr>        
+        </table>
+          </div>
+        </div>
+        
+        
+      </div>    
+      
+      <div class="span6" >
+        <span ng-show="room"> 
+        
+          <table class="table table-hover">
+            <tr>
+              <th></th>
+              <th>ลำดับ
+                <a href="" ng-click="predicate = 'paper_id'; reverse=false"><i class="icon-chevron-up"></i></a>
+                <a href="" ng-click="predicate = 'paper_id'; reverse=true"><i class="icon-chevron-down"></i></a>
+              </th>
+              <th>ชื่อเรื่อง</th>
+            </tr>
+            <tr style="cursor:pointer"
+                ng-repeat="entry in entry_list|filter:search|orderBy:predicate:reverse" ng-hide="entry.selected">                
+              <td><input type="checkbox" ng-model="entry.selected" ng-click="add_paper()"></td>
+              <td>{{entry.paper_id}}</td>
+              <td><strong>{{entry.type}}</strong><br>
+                  {{entry.title}} <br>
+                 <span class="label label-success" ng-hide="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">{{entry.status_paper}}</span>
+              </td>   
+            </tr>        
+        </table>
+        </span>
+      </div>
+      
+    </div>    
+  </div>
+</div>
+
+
+

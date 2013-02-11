@@ -1,5 +1,5 @@
 var app = angular.module('conf_file', [
-  'mongo_service']);
+  'mongo_service','$strap.directives']);
 
 app.filter('skip', function() {
   return function(input, start) {
@@ -40,6 +40,11 @@ app.config(function($routeProvider) {
     controller:EntryController, 
     templateUrl:'static/entry/entry_form.html'
   });
+  
+  $routeProvider.when('/room', {
+    controller:RoomController, 
+    templateUrl:'static/room/room.html'
+  });
 
   $routeProvider.when('/report', {
     controller:ReportController, 
@@ -69,6 +74,7 @@ function UserCtrl($scope, User, Logout) {
     });
   };
 }
+
 
 function ScheduleController($scope, Entry) {
   $scope.get_type = function (t) {
@@ -106,6 +112,81 @@ function ScheduleController($scope, Entry) {
     });
   } 
 };
+
+
+function RoomController($scope, Room, Entry) {
+  var self = this;
+  self.message = function(message) {
+      $scope.message = message;
+      setTimeout(function() {      
+        $scope.$apply(function() {
+          $scope.message = null;
+        });
+      }, 3000);
+  };
+  
+  self.update_paper = function() {
+    if($scope.room) {
+      $scope.entry_list = Entry.query(function(response) {
+        angular.forEach(response, function(entry) {
+          entry['paper_id'] = parseInt(entry.paper_id);
+          angular.forEach($scope.room.paper_list, function(paper) {
+           if(entry._id == paper._id) {
+             entry.selected = true;
+           }
+          });
+        });
+      });
+    }
+  };  
+    
+  $scope.create = function () {
+      room = {};
+  };
+
+  $scope.room_list = Room.query();    
+  
+  $scope.select_room = function (r){
+    $scope.room = r;    
+    self.update_paper();
+  };
+      
+  $scope.add_paper = function() {        
+    $scope.room['paper_list'] = [];
+    angular.forEach($scope.entry_list, function(entry) {
+      if(entry.selected) {
+        $scope.room.paper_list.push(entry);
+      }
+    });    
+    Room.update({id:$scope.room._id},angular.extend({}, $scope.room,{_id:undefined}), function(response) {
+      console.log(response);
+    });                  
+  };
+  
+  $scope.save = function() {
+    if ($scope.room._id) {
+
+      Room.update({id:$scope.room._id},angular.extend({}, 
+        $scope.room,{_id:undefined}),
+        function(result) {     
+           
+          if(result.success) {
+            $scope.room = null;
+            $scope.room_list = Room.query(); 
+ 
+          } else {
+            $scope.message = "Not success";    
+          }
+        }); 
+    } else {
+      Room.save({}, $scope.room, function(result) {  ;  
+        $scope.room_list = Room.query();      
+      });
+    }
+  }; 
+  
+
+}
 
 
 function ReportController($scope, Entry) {
@@ -160,16 +241,6 @@ function EntryListController($scope, Entry,$location) {
       entry['paper_id'] = parseInt(entry.paper_id);
     });
   });
-  $scope.currentPage = 0;
-  $scope.page = 0;
-  $scope.pageSize = 2;    
-    
-  $scope.numberOfPages=function() {
-    if($scope.entry_list ) {        
-      var totalPage = Math.ceil($scope.file_list.length/$scope.pageSize);               
-      return totalPage;          
-    }
-  };     
 
   $scope.show_entry = function(id) {
     $location.path('/entry/info/'+id);
