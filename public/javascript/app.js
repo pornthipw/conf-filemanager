@@ -77,40 +77,7 @@ function UserCtrl($scope, User, Logout) {
 
 
 function ScheduleController($scope, Entry) {
-  $scope.get_type = function (t) {
-  $scope.type = [];
-  $scope.current_t = t;
-  if ($scope.current_t =="1"){
-     var query_obj = {"type":"การนำเสนอปากเปล่า"}; 
-  } else {
-      if ($scope.current_t =="2") {
-        var query_obj = {"type":"ารนำเสนอแบบโปสเตอร์"};
-      }
-  }
-    $scope.entry_list = Entry.query({query:JSON.stringify(query_obj)},function(response) {
-      
-      var dict_type = [];
-      angular.forEach(response, function(entry) {
-        if(dict_type.indexOf(entry.type) == -1) {
-          $scope.type.push({'name':entry.type,'sectors':[]});
-          dict_type.push(entry.type);
-        }
-        
-        
-        angular.forEach($scope.type, function(e_type) {
-          //console.log("-->"+e_type.name);
-          //console.log("+"+entry.type);
-          if(e_type.name==entry.type) {
-              angular.forEach(e_type.sectors, function(sector) {
-                console.log(sector.name);
-              });
-            }
-        });
-        
-      });
 
-    });
-  } 
 };
 
 
