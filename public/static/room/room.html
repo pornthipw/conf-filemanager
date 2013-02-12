@@ -1,4 +1,3 @@
-
 <div class="row-fluid">
   <div class="span12" >
     <div class="row-fluid">
@@ -54,10 +53,12 @@
             </div>
           </div>
         </div>
-        
+        <div class="page-header">
+          <h1 id="pageTitle">Room Management</h1>
+        </div>
         <span ng-show="room" >
           <h5>รายชื่อผลงานวิจัยที่ได้รับการพิจารณาให้นำเสนอแบบปากเปล่า (Oral Pesentation) <br>
-          {{room.description}}<br>
+          {{room.description}}<br> วันที่ {{room.date}} เริ่มเวลา {{room.start_time}}<br>
           ณ ห้อง {{room.name}}
           </h5>
           <table class="table table-bordered table-striped table-condensed"></table>

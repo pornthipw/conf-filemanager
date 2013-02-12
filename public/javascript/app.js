@@ -76,8 +76,12 @@ function UserCtrl($scope, User, Logout) {
 }
 
 
-function ScheduleController($scope, Entry) {
-
+function ScheduleController($scope, Room, Entry,User, Logout) {
+  $scope.room_list = Room.query();
+  $scope.select_room = function (r){
+    $scope.room = r;    
+    //self.update_paper();
+  };
 };
 
 
@@ -203,6 +207,10 @@ function RoomController($scope, Room, Entry,User, Logout) {
       if(result.success) {        
         $scope.room = null;
         $scope.room_list = Room.query();    
+      } else {
+         if(response.error == 401) {
+          self.message("You are not authorized to update content");
+        }
       }
     });
   }
