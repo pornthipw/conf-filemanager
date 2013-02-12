@@ -34,7 +34,6 @@
           </a>  
         </span>  
         <span class="pull-right">
-          
           <form class="form-inline pull-left"  
              id="file_upload_form" 
              method="post" enctype="multipart/form-data" 
@@ -42,13 +41,11 @@
              target="upload_target" class="form-horizontal"  >  
             <input type="hidden" name="entry"  value="{{entry._id}}" ng-model="entry">                
             <div class="btn-group">
-              
               <button class="btn btn-success fileinput-button">
                 <i class="icon-plus icon-white"></i>     
                 Select File     
                 <input type="file" name="file" id="file" onchange="angular.element(this).scope().setFile(this)"/ >          
               </button>    
-  
               <button type="btn" class="btn btn-primary start" ng-disabled="!theFile">
                 <i class="icon-upload icon-white"></i>          
                 Upload
@@ -66,16 +63,23 @@
     <div class="span12">
       <div class="row-fluid">
         <div class="span8">
-          {{entry.author}}
           <dl class="dl-horizontal">
             <dt>ชื่อเรื่อง </dt>
             <dd>{{entry.title}}&nbsp;</dd>
+            <dt>ผู้วิจัย</dt>
+            <dd>{{entry.author}}&nbsp;</dd>
             <dt>สาขาวิชาของผู้วิจัย</dt>
             <dd>{{entry.major}}&nbsp;</dd>
             <dt>กลุ่มสาขาวิชา</dt>
             <dd>{{entry.sector}}&nbsp;</dd>
             <dt>ประเภทการนำเสนอ</dt>
-            <dd>{{entry.type}}&nbsp;</dd>
+            <dd>{{entry.type}}&nbsp;<br>
+               <span class="label label-info">
+               {{entry.room_rel.date}} 
+               {{entry.paper_rel.start}}-{{entry.paper_rel.end}} 
+               : {{entry.room_rel.name}} 
+               </span>
+            </dd>
             <dt>สถานะการแก้ไข</dt>
             <dd>{{entry.status_paper}}&nbsp;</dd>
           </dl>
