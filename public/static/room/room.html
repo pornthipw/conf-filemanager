@@ -53,29 +53,39 @@
             </div>
           </div>
         </div>
-        <div class="page-header">
-          <h1 id="pageTitle">Room Management</h1>
-        </div>
-        <span ng-show="room" >
-          <h5>รายชื่อผลงานวิจัยที่ได้รับการพิจารณาให้นำเสนอแบบปากเปล่า (Oral Pesentation) <br>
-          {{room.description}}<br> วันที่ {{room.date}} เริ่มเวลา {{room.start_time}}<br>
-          ณ ห้อง {{room.name}}
-          </h5>
-          <table class="table table-bordered table-striped table-condensed"></table>
         
-
-        <ul>
-          <li ng-repeat="paper in room.paper_list">
-            {{paper.start}} - {{paper.end}} : {{paper.title}}
-             (<em>{{paper.author}}</em>) | {{paper.major}} 
-            <a href="" ng-click="remove_paper(paper)">
-              <i class="icon-remove"></i>
-            </a>
-                
-          </li>
-        </ul>
-        <br><br>
-        </span>
+        <div class="row-fluid">
+          <div class="page-header">
+            <h1 id="pageTitle">Room Management</h1>
+          </div>
+          <span ng-show="room" >
+            <h5>รายชื่อผลงานวิจัยที่ได้รับการพิจารณาให้นำเสนอแบบปากเปล่า (Oral Pesentation) <br>
+              {{room.description}}<br> วันที่ {{room.date}} เริ่มเวลา {{room.start_time}}<br>
+              ณ ห้อง {{room.name}}
+            </h5>
+          </span>
+        </div>        
+                    
+        <div class="row-fluid" ng-show="room">
+          <table class="table table-bordered table-striped table-condensed">
+            <tr>
+              <th class="span2">Time</th>
+              <th>Title</th>
+              <th></th>
+            </tr>
+            <tr ng-repeat="paper in room.paper_list">
+              <td>{{paper.start}}-{{paper.end}}</td>
+              <td>({{paper.paper_id}}) {{paper.title}} <br><em>{{paper.author}}</em> <strong>{{paper.major}}</strong></td>
+              <td>
+                <a href="" ng-click="remove_paper(paper)">
+                  <i class="icon-remove"></i>
+                </a>            
+              </td>
+            </tr>
+          </table>
+        </div>
+        
+        
         <table class="table table-hover" ng-show="room">
           <tr>
             <th></th>

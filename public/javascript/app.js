@@ -77,11 +77,42 @@ function UserCtrl($scope, User, Logout) {
 
 
 function ScheduleController($scope, Room, Entry,User, Logout) {
-  $scope.room_list = Room.query();
-  $scope.select_room = function (r){
-    $scope.room = r;    
-    //self.update_paper();
-  };
+  var date_tmp = [];
+  $scope.date_list = [];
+  $scope.selected_room = null;
+  $scope.room_list = Room.query(function(r_list) {
+    angular.forEach(r_list, function(room) {            
+      if(date_tmp.indexOf(room.date)==-1 && date_tmp.indexOf(room.description)==-1) {        
+        if(!room.date) {           
+          room.date = room.description;
+        } 
+        date_tmp.push(room.date);         
+        $scope.date_list.push({'date':room.date,'room_list':[]});        
+      }
+      angular.forEach($scope.date_list, function(obj) {
+        if(obj.date == room.date) {
+          obj.room_list.push(room);
+          obj.room_list.sort(function(a, b) {            
+            if(a.name < b.name) {
+              return -1;
+            }
+            if(a.name > b.name) {
+              return 1;
+            }
+            return 0;
+          });
+          if(!$scope.selected_room) {
+            $scope.selected_room = room;
+          }
+        }
+      });
+    });        
+        
+  });  
+  
+  $scope.select_room = function(r) {
+    $scope.selected_room = r;
+  }  
 };
 
 
