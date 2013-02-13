@@ -1,0 +1,115 @@
+<div class="row-fluid">
+  <div class="span12" ng-show="message">
+    <div class="alert">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <strong>Warning!</strong>  {{message}}
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" ng-show="user.user">
+  <div class="row-fluid" >
+    <div class="span12" > 
+      <div class="form-actions input-append">    
+        <span class="pull-left ">  
+          <a href="" ng-click="view_info()" class="btn"> 
+            <i class="icon-backward"></i> Back
+          </a>
+             
+        </span>
+        <span class="pull-right">
+          <a href="" ng-click="save()" class="btn"> 
+            <i class="icon-ok"></i> Save 
+          </a>
+          <a href="" ng-click="del()" class="btn btn-danger"> 
+            <i class="icon-remove icon-white"></i> Delete 
+          </a>  
+        </span>      
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" ng-show="user.user">
+  <div class="row-fluid">
+    <div class="span8">
+      <!--Sidebar content-->
+      <div class="row-fluid">
+        <div class="span12" > 
+          <form class="form-horizontal"> 
+            <div class="control-group">
+              <label class="control-label" for="inputName">ลำดับที่บทความ </label>
+              <div class="controls">
+                <div class="control-group input-append">
+                  <input type="text" ng-model="entry.paper_id">
+                </div>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="inputName">ชื่อเรื่อง </label>
+              <div class="controls">
+                <!--<input type="text" ng-model="entry.title">-->
+                <textarea rows="6" ng-model="entry.title"></textarea>
+              </div>            
+            </div>  
+              
+            <div class="control-group">
+              <label class="control-label">ผู้วิจัย</label>
+              <div class="controls">
+                <input type="text" ng-model="entry.author">
+              </div>            
+            </div>    
+            
+            
+            <div class="control-group">
+              <label class="control-label">สถาบัน</label>
+              <div class="controls">
+                <input type="text" ng-model="entry.university">
+              </div>            
+            </div>  
+            
+            <div class="control-group">
+              <label class="control-label">สาขาวิชาของผู้วิจัย</label>
+              <div class="controls">
+                <input type="text" ng-model="entry.major">
+              </div>            
+            </div>    
+            <div class="control-group">
+              <label class="control-label" for="inputName">กลุ่มสาขาวิชา</label>
+              <div class="controls">
+                <select id="inputName" placeholder="sector" ng-model="entry.sector">
+                      <option>ยังไม่ระบุ</option>
+                      <option ng-selected="entry.sector=='กลุ่มสังคมศาสตร์'">กลุ่มสังคมศาสตร์</option>
+                      <option ng-selected="entry.sector=='กลุ่มวิทยาศาสตร์สุขภาพ'">กลุ่มวิทยาศาสตร์สุขภาพ</option>
+                      <option ng-selected="entry.sector=='กลุ่มวิทยาศาสตร์และเทคโนโลยี'">กลุ่มวิทยาศาสตร์และเทคโนโลยี</option>
+                </select>
+              </div>            
+            </div> 
+            <div class="control-group">
+              <label class="control-label" for="inputName">ประเภทการนำเสนอ</label>
+              <div class="controls">
+                <select id="inputName" placeholder="sector" ng-model="entry.type">
+                      <option>ยังไม่ระบุ</option>
+                      <option ng-selected="entry.type=='การนำเสนอปากเปล่า'">การนำเสนอปากเปล่า</option>
+                      <option ng-selected="entry.type=='การนำเสนอแบบโปสเตอร์'">การนำเสนอแบบโปสเตอร์</option>
+                </select>
+              </div>            
+            </div> 
+            <div class="control-group">
+              <label class="control-label" for="inputName">สถานะการแก้ไข</label>
+              <div class="controls">
+                <select id="inputName" placeholder="status_paper" ng-model="entry.status_paper">
+                      <option>ยังไม่ระบุ</option>
+                      <option ng-selected="entry.status_paper=='ผู้นำเสนอแก้ไขครั้งสุดท้ายและส่งไฟล์word แล้ว'">ผู้นำเสนอแก้ไขครั้งสุดท้ายและส่งไฟล์word แล้ว</option>
+                      <option ng-selected="entry.status_paper=='เจ้าหน้าที่ตรวจสอบเรียบร้อยแล้ว'">เจ้าหน้าที่ตรวจสอบเรียบร้อยแล้ว</option>
+                </select>
+              </div>            
+            </div>       
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

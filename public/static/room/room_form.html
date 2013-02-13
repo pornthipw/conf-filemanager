@@ -1,0 +1,78 @@
+<div class="row-fluid">
+  <div class="span12" ng-show="message">
+    <div class="alert">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <strong>Warning!</strong>  {{message}}
+    </div>
+  </div>
+
+</div>
+
+<div class="container-fluid" ng-show="user.user">
+  <div class="row-fluid" >
+    <div class="span12" > 
+      <div class="form-actions input-append">    
+        <span class="pull-left ">  
+          <a href="" ng-click="view_info()" class="btn"> 
+            <i class="icon-backward"></i> Back
+          </a>
+             
+        </span>
+        <span class="pull-right">
+          <a href="" ng-click="save()" class="btn"> 
+            <i class="icon-ok"></i> Save 
+          </a>
+          <a href="" ng-click="del()" class="btn btn-danger"> 
+            <i class="icon-remove icon-white"></i> Delete 
+          </a>  
+        </span>      
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" ng-show="user.user">
+  <div class="row-fluid">
+    <div class="span8">      
+      <div class="row-fluid">
+        <div class="span12" > 
+          <form class="form-horizontal"> 
+            
+            <div class="control-group">
+              <label class="control-label" for="inputName">ห้องนำเสนอ</label>
+              <div class="controls">                
+                 <input type="text" ng-model="room.name">
+              </div>            
+            </div>
+            
+            <div class="control-group">
+              <label class="control-label" for="inputName">เสนอวันที่</label>
+              <div class="controls">
+              <input type="text" ng-model="room.date" data-date-format="dd/mm/yyyy" bs-datepicker>
+                <button type="button" class="btn" data-toggle="datepicker"><i class="icon-calendar"></i></button>
+                
+              </div>            
+            </div>
+                        
+            <div class="control-group">
+              <label class="control-label" for="inputName">เวลาเริ่มต้น </label> 
+              <div class="controls">                  
+                <input type="text" ng-model="room.start_time">
+              </div>
+            </div>  
+
+            <div class="control-group">
+              <label class="control-label" for="inputName">เวลาสิ้นสุด </label> 
+              <div class="controls">                  
+                <input type="text" ng-model="room.end_time">
+              </div>
+            </div>  
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
