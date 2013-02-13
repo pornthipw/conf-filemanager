@@ -97,7 +97,7 @@
               <a href="file/{{file._id}}" target="_blank">
                  <i class="icon-file"></i> {{file.filename}}
               </a>
-              <a href="" target="_blank" ng-click="del(file._id)"> 
+              <a href="" target="_blank" ng-click="del(file._id)" ng-show="user.user && user.user.role=='admin'"> 
                  <i class="icon-remove"></i>
               </a>
             </li>
