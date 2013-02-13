@@ -315,6 +315,23 @@ function EntryListController($scope, Entry,$location) {
     });
   });
 
+  $scope.test = function() {
+    var result = '';
+    angular.forEach($scope.entry_list, function(entry) {
+      result += entry.paper_id + ','
+              + entry.author +','
+              + entry.university +','
+              +'\n';
+    });
+
+    var dataUrl = 'data:text/csv;charset=utf-8,'+encodeURI(result);
+    var link = document.createElement('a');
+    var link_e = angular.element(link);
+    link_e.attr('href',dataUrl);
+    link_e.attr('download','conf.csv');
+    link.click();
+  };
+
   $scope.show_entry = function(id) {
     $location.path('/entry/info/'+id);
   };
