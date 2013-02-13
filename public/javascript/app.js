@@ -56,6 +56,11 @@ app.config(function($routeProvider) {
     templateUrl:'static/schedule.html'
   });
   
+  $routeProvider.when('/author', {
+    controller:AuthorController, 
+    templateUrl:'static/author/author.html'
+  });
+  
   $routeProvider.when('/', {
     controller:EntryListController, 
     templateUrl:'static/index.html'
@@ -75,6 +80,13 @@ function UserCtrl($scope, User, Logout) {
   };
 }
 
+function AuthorController($scope, Entry, User, Logout) {
+   $scope.author_list = Entry.query(function(response) {
+    angular.forEach(response, function(entry) {
+      entry['paper_id'] = parseInt(entry.paper_id);
+    });
+  });
+}
 
 function ScheduleController($scope, Room, Entry,User, Logout) {
   var date_tmp = [];

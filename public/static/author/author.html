@@ -1,0 +1,7 @@
+<table>
+  <tr ng-repeat="author in author_list | orderBy:'paper_id':reverse">
+    <td class="span1">{{author.paper_id}} </td>
+    <td class="span3"><a href="#/entry/info/{{author._id}}">{{author.author}}</td>
+    <td>{{author.university}}</td>
+  </tr>
+</table>
