@@ -1,5 +1,17 @@
-<table>
-  <tr ng-repeat="author in author_list | orderBy:'paper_id':reverse">
+<table class="table table-hover ">
+   <tr><td colspan="3"> <strong>รายชื่อผู้นำเสนอผลงาน</strong></td></tr>
+  <tr ng-repeat="author in author_list | orderBy:'paper_id':reverse" ng-hide="author.status_paper=='ยังไม่ระบุ' || !author.status_paper">
+    <td class="span1">{{author.paper_id}} </td>
+    <td class="span3"><a href="#/entry/info/{{author._id}}">{{author.author}}</td>
+    <td>{{author.university}}</td>
+  </tr>
+</table>
+
+
+
+<table class="table">
+  <tr><td colspan="3"> <strong>รายชื่อผู้ถูกตัดสิทธิ์การนำเสนอเนื่องจากไม่ส่งผลงานฉบับแก้ไข</strong></td></tr>
+  <tr ng-repeat="author in author_list | orderBy:'paper_id':reverse" ng-show="author.status_paper=='ยังไม่ระบุ' || !author.status_paper">
     <td class="span1">{{author.paper_id}} </td>
     <td class="span3"><a href="#/entry/info/{{author._id}}">{{author.author}}</td>
     <td>{{author.university}}</td>

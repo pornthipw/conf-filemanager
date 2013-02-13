@@ -1,7 +1,7 @@
 var app = angular.module('mongo_service', ['ngResource']);
 
-//var prefix = '/apps/confile';
-var prefix = '';
+var prefix = '/apps/confile';
+//var prefix = '';
 
 
 app.factory('Entry', function($resource) {
