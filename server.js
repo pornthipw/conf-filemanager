@@ -90,7 +90,7 @@ app.post('/file/upload', filemanagerdb.uploadFile);
 
 app.get('/file/:id', filemanagerdb.getFile);
 
-app.del('/file/:id', filemanagerdb.deleteFile);
+app.del('/file/:id', admin_role, filemanagerdb.deleteFile);
 
 app.get('/', function(req, res) {
   res.render('index', {baseHref:config.site.baseUrl});
