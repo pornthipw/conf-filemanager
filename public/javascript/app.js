@@ -323,18 +323,28 @@ function EntryCreateController($scope, Entry,$location, $routeParams,User, Logou
   });
 }
 
-function EntryViewController($scope, Entry, $location, $routeParams,User, Logout,FileDB,GridDB) {
-$scope.user = User.get(function(response) {
-  if (response.user ||$scope.user ) {
-    Entry.get({id:$routeParams.id},function(response) {
-      $scope.entry = response;        
-      var query_obj = {"metadata":{"entry_id":$scope.entry._id}};  
-      $scope.file_list = FileDB.query({query:JSON.stringify(query_obj)},function(res) {
-        //console.log(res);
+function EntryViewController($scope, Entry, $location, $routeParams,User, Logout,FileDB,GridDB,Room) {
+  $scope.user = User.get(function(response) {
+    if (response.user ||$scope.user ) {
+      Entry.get({id:$routeParams.id},function(response) {
+        $scope.entry = response;        
+        Room.query(function(room_list) {
+          angular.forEach(room_list,function(room) {
+            if(!$scope.entry.room_rel) {
+            angular.forEach(room.paper_list,function(paper) {
+              if(paper._id == $scope.entry._id) {
+                $scope.entry.room_rel = room;
+                $scope.entry.paper_rel = paper;
+              }
+            });
+            }
+          });
+        });
+        var query_obj = {"metadata":{"entry_id":$scope.entry._id}};  
+        $scope.file_list = FileDB.query({query:JSON.stringify(query_obj)});
       });
-    });
     
-  $scope.limit = 50;
+    $scope.limit = 50;
   
     self.message = function(message) {
       $scope.message = message;
@@ -376,7 +386,7 @@ $scope.user = User.get(function(response) {
       });
     };
     
-      $scope.del = function(id) {	
+    $scope.del = function(id) {	
       GridDB.remove({id:id}, function(docs) {	  	
           var query_obj2 = {"metadata":{"entry_id":$scope.entry._id}};
             $scope.file_list = FileDB.query({query:JSON.stringify(query_obj2)},function(res) {
