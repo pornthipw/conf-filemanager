@@ -430,17 +430,9 @@ function EntryViewController($scope, Entry, $location, $routeParams,User, Logout
   });
 }
 
-function EntryController($scope, Entry, $location, $routeParams,User, Logout,FileDB) {
+function EntryController($scope, Entry, $location, $routeParams,User, Logout,FileDB,Room) {
   
 
-  /*
-  $scope.group_date = [
-    {name:'28 กุมภาพันธ์ 2556'},
-    {name:'1 มีนาคม 2556'},
-  ];
-
-  */
-  
   var self = this;
   self.message = function(message) {
       $scope.message = message;
@@ -452,21 +444,12 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
   };
   
   $scope.user = User.get(function(response) {
-  var self = this;
-  self.current_entry = null;  
-  if (response.user ||$scope.user ) {
-
+    if (response.user ||$scope.user ) {
       Entry.get({id:$routeParams.id},function(response) {
         $scope.entry = response;        
         var query_obj = {"metadata":{"entry_id":response._id}};
-        console.log(query_obj);  
-        $scope.file_list = FileDB.query({query:JSON.stringify(query_obj)},function(res) {
-          console.log(res);
-        });
-      
+        $scope.file_list = FileDB.query({query:JSON.stringify(query_obj)});
       });
-      
-      
     
       $scope.save = function () { 
         Entry.update({
@@ -475,6 +458,17 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
           $scope.entry,{_id:undefined}),
           function(result) {      
             if(result.success) {
+              Room.query(function(room_list) {
+                angular.forEach(room_list, function(room) {
+                  angular.forEach(room.paper_list, function(paper) {
+                    if(paper._id == $scope.entry._id) {
+                      angular.extend(paper,$scope.entry);
+                      Room.update({id:room._id},
+                        angular.extend({},room,{_id:undefined})); 
+                    }
+                  });
+                });
+              });
               $location.path('/entry/info/'+$scope.entry._id);          
             } else {
               if(result.error == 401) {
