@@ -28,7 +28,11 @@
               <span ng-hide="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">{{entry.paper_id}}</span>
             </td>
             <td><strong>{{entry.type}}</strong><br>
-                {{entry.title}} <br>
+                <p>{{entry.title}}</p>
+                <blockquote>
+                  <i class="icon-user"></i> <em>{{entry.author}}</em> 
+                  <i class="icon-home"></i> <em>{{entry.university}}</em> 
+                </blockquote>
             </td>   
           </tr>        
         </table>
