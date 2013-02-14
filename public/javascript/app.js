@@ -463,6 +463,24 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
         });
       }, 3000);
   };
+
+  $scope.init_author = function(entry) {
+    if(!entry.author_list) {
+      entry.author_list = [];
+    }
+    entry.author_list.push({});
+  }
+
+  $scope.add_author = function(entry) {
+    if(!entry.author_list) {
+      entry.author_list = [];
+    }
+    entry.author_list.push({});
+  }
+
+  $scope.remove_author = function(entry,index) {
+    entry.author_list.remove(index,1);
+  }
   
   $scope.user = User.get(function(response) {
     if (response.user ||$scope.user ) {
@@ -471,7 +489,7 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
         var query_obj = {"metadata":{"entry_id":response._id}};
         $scope.file_list = FileDB.query({query:JSON.stringify(query_obj)});
       });
-    
+      
       $scope.save = function () { 
         Entry.update({
           id:$scope.entry._id

@@ -45,22 +45,49 @@
                 </div>
               </div>
             </div>
+
             <div class="control-group">
-              <label class="control-label" for="inputName">ชื่อเรื่อง </label>
+              <label class="control-label">ชื่อเรื่อง </label>
               <div class="controls">
-                <!--<input type="text" ng-model="entry.title">-->
                 <textarea rows="6" ng-model="entry.title"></textarea>
               </div>            
             </div>  
               
+          
             <div class="control-group">
               <label class="control-label">ผู้วิจัย</label>
               <div class="controls">
-                <input type="text" ng-model="entry.author">
+                {{entry.author}}
+              </div>            
+            </div>    
+
+            <div class="control-group" ng-hide="entry.author_list">
+              <label class="control-label">ผู้วิจัย</label>
+              <div class="controls">
+                <a href="" ng-click="add_author(entry)">
+                  <i class="icon-plus"></i>
+                </a>
               </div>            
             </div>    
             
-            
+            <div class="control-group"
+              ng-show="entry.author_list"
+              ng-repeat="author in entry.author_list">
+              <label class="control-label">ผู้วิจัย</label>
+              <div class="controls form-inline">
+                <input type="text" ng-model="author.name">
+                <label class="checkbox">
+                  <input type="checkbox" ng-model="author.advisor"> Advisor
+                </label>
+                <a href="" ng-click="add_author(entry)">
+                  <i class="icon-plus"></i>
+                </a>
+                <a href="" ng-click="remove_author(entry,$index)">
+                  <i class="icon-minus"></i>
+                </a>
+              </div>            
+            </div>    
+
             <div class="control-group">
               <label class="control-label">สถาบัน</label>
               <div class="controls">
