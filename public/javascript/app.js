@@ -308,19 +308,40 @@ function ReportController($scope, Entry) {
   });
 }
 
-function EntryListController($scope, Entry,$location) {
+function EntryListController($scope, Entry,$location,Room) {
   $scope.entry_list = Entry.query(function(response) {
     angular.forEach(response, function(entry) {
       entry['paper_id'] = parseInt(entry.paper_id);
     });
   });
 
+
+  $scope.synched_count=0;
+  $scope.synch = function() {
+    Room.query(function(room_list) {
+      angular.forEach($scope.entry_list, function(entry) {
+        angular.forEach(room_list, function(room) {
+          angular.forEach(room.paper_list, function(paper) {
+            if(paper._id == entry._id) {
+               angular.extend(paper,entry);
+               Room.update({id:room._id},
+                 angular.extend({},room,{_id:undefined}),function(res) {
+                   $scope.synched_count +=1;
+               }); 
+            }
+          });
+        });
+      });
+    });
+  }
+
   $scope.test = function() {
     var result = '';
     angular.forEach($scope.entry_list, function(entry) {
       result += entry.paper_id + ','
+              + entry.type +','
               + entry.author +','
-              + entry.university +','
+              + entry.university 
               +'\n';
     });
 
