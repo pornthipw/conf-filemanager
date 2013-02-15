@@ -57,7 +57,9 @@
             <div class="control-group">
               <label class="control-label">ผู้วิจัย</label>
               <div class="controls">
+                <label class="checkbox">
                 {{entry.author}}
+                </label>
               </div>            
             </div>    
 
@@ -74,17 +76,20 @@
               ng-show="entry.author_list"
               ng-repeat="author in entry.author_list">
               <label class="control-label">ผู้วิจัย</label>
-              <div class="controls form-inline">
-                <input type="text" ng-model="author.name">
-                <label class="checkbox">
-                  <input type="checkbox" ng-model="author.advisor"> Advisor
-                </label>
-                <a href="" ng-click="add_author(entry)">
-                  <i class="icon-plus"></i>
-                </a>
-                <a href="" ng-click="remove_author(entry,$index)">
-                  <i class="icon-minus"></i>
-                </a>
+              <div class="controls well">
+                  <input type="text" placeholder="Name"
+                       ng-model="author.name">
+                  <input type="text" placeholder="Affiliation" 
+                       ng-model="author.affiliation">
+                  <label class="checkbox">
+                    <input type="checkbox" ng-model="author.advisor"> Advisor
+                  </label>
+                  <a href="" ng-click="add_author(entry)">
+                    <i class="icon-plus"></i>
+                  </a>
+                  <a href="" ng-click="remove_author(entry,$index)">
+                    <i class="icon-minus"></i>
+                  </a>
               </div>            
             </div>    
 
@@ -132,6 +137,12 @@
                 </select>
               </div>            
             </div>       
+            <div class="control-group">
+              <label class="control-label">ยกเลิก</label>
+              <div class="controls">
+                <input type="checkbox" ng-model="entry.cancel">
+              </div>            
+            </div> 
           </form>
         </div>
       </div>

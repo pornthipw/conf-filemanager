@@ -257,14 +257,13 @@ function RoomController($scope, Room, Entry,User, Logout) {
       }
     });
   }
-
 }
-
-/*--------*/
 
 function ReportController($scope, Entry) {
   $scope.type = [];
-  $scope.entry_list = Entry.query(function(response) {
+  var query_obj = {$or:[{cancel:{$exists:false}},{cancel:false}]};
+  $scope.entry_list = Entry.query({query:JSON.stringify(query_obj)},
+    function(response) {
     var dict_type = [];
     angular.forEach(response, function(entry) {
       if(dict_type.indexOf(entry.type) == -1) {
