@@ -27,11 +27,14 @@
               </span>
               <span ng-hide="entry.status_paper=='ยังไม่ระบุ' || !entry.status_paper">{{entry.paper_id}}</span>
             </td>
-            <td><strong>{{entry.type}}</strong><br>
+            <td>
+                <strong ng-show="entry.type.title">
+                  {{entry.type.title}}
+                </strong><br>
                 <p>{{entry.title}}</p>
-                <blockquote>
-                  <i class="icon-user"></i> <em>{{entry.author}}</em> 
-                  <i class="icon-home"></i> <em>{{entry.university}}</em> 
+                <blockquote ng-repeat="author in entry.author_list">
+                  <i class="icon-user"></i> <em>{{author.name}}</em> 
+                  <i class="icon-home"></i> <em>{{author.affiliation}}</em> 
                 </blockquote>
             </td>   
           </tr>        

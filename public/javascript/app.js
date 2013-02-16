@@ -266,13 +266,14 @@ function ReportController($scope, Entry) {
     function(response) {
     var dict_type = [];
     angular.forEach(response, function(entry) {
-      if(dict_type.indexOf(entry.type) == -1) {
-        $scope.type.push({'name':entry.type,'total':0,'sectors':[]});
-        dict_type.push(entry.type);
-      }
-      
+      if(entry.type.title) {
+        if(dict_type.indexOf(entry.type.title) == -1) {
+          $scope.type.push({'name':entry.type.title,'total':0,'sectors':[]});
+          dict_type.push(entry.type.title);
+        }
+      } 
       angular.forEach($scope.type, function(e_t) {
-        if(e_t.name == entry.type) {
+        if(e_t.name == entry.type.title) {
           e_t.total+=1;
           var sector_exists = false;
           var sector_obj = null;
@@ -310,29 +311,18 @@ function ReportController($scope, Entry) {
 function EntryListController($scope, Entry,$location,Room) {
   $scope.entry_list = Entry.query(function(response) {
     angular.forEach(response, function(entry) {
+      /*
+      if(entry.type == 'การนำเสนอแบบโปสเตอร์') {
+        entry.type = {type:'P',title:'การนำเสนอแบบโปรเตอร์'};
+        Entry.update({id:entry._id},angular.extend({}, 
+          entry,{_id:undefined}), function(res) {      
+        });
+      }
+      */
       entry['paper_id'] = parseInt(entry.paper_id);
     });
   });
 
-
-  $scope.synched_count=0;
-  $scope.synch = function() {
-    Room.query(function(room_list) {
-      angular.forEach($scope.entry_list, function(entry) {
-        angular.forEach(room_list, function(room) {
-          angular.forEach(room.paper_list, function(paper) {
-            if(paper._id == entry._id) {
-               angular.extend(paper,entry);
-               Room.update({id:room._id},
-                 angular.extend({},room,{_id:undefined}),function(res) {
-                   $scope.synched_count +=1;
-               }); 
-            }
-          });
-        });
-      });
-    });
-  }
 
   $scope.test = function() {
     var result = '';
@@ -452,6 +442,11 @@ function EntryViewController($scope, Entry, $location, $routeParams,User, Logout
 
 function EntryController($scope, Entry, $location, $routeParams,User, Logout,FileDB,Room) {
   
+  $scope.types = [
+    {type:'O',title:'การนำเสนอแบบบรรยาย'},
+    {type:'P',title:'การนำเสนอแบบโปรเตอร์'}
+  ];
+  
 
   var self = this;
   self.message = function(message) {
@@ -480,7 +475,7 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
   $scope.remove_author = function(entry,index) {
     entry.author_list.remove(index,1);
   }
-  
+
   $scope.user = User.get(function(response) {
     if (response.user ||$scope.user ) {
       Entry.get({id:$routeParams.id},function(response) {

@@ -118,12 +118,14 @@
               </div>            
             </div> 
             <div class="control-group">
-              <label class="control-label" for="inputName">ประเภทการนำเสนอ</label>
+              <label class="control-label" for="inputName">
+                 ประเภทการนำเสนอ
+              </label>
+
               <div class="controls">
-                <select id="inputName" placeholder="sector" ng-model="entry.type">
-                      <option>ยังไม่ระบุ</option>
-                      <option ng-selected="entry.type=='การนำเสนอปากเปล่า'">การนำเสนอปากเปล่า</option>
-                      <option ng-selected="entry.type=='การนำเสนอแบบโปสเตอร์'">การนำเสนอแบบโปสเตอร์</option>
+                {{entry.type}}
+                <select ng-model="entry.type" 
+                   ng-options="t.title for t in types">
                 </select>
               </div>            
             </div> 
@@ -141,6 +143,13 @@
               <label class="control-label">ยกเลิก</label>
               <div class="controls">
                 <input type="checkbox" ng-model="entry.cancel">
+              </div>            
+            </div> 
+
+            <div class="control-group">
+              <label class="control-label">Contact Tel.</label>
+              <div class="controls">
+                <input type="text" class="input-small" ng-model="entry.phone">
               </div>            
             </div> 
           </form>

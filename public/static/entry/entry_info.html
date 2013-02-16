@@ -73,7 +73,14 @@
             <dt>กลุ่มสาขาวิชา</dt>
             <dd>{{entry.sector}}&nbsp;</dd>
             <dt>ประเภทการนำเสนอ</dt>
-            <dd>{{entry.type}}&nbsp;<br>
+            <dd>
+               <span ng-show="entry.type.title">
+                 {{entry.type.title}}
+               </span>
+               <span ng-hide="entry.type.title">
+                 {{entry.type}}
+               </span>
+            
                <span class="label label-info">
                {{entry.room_rel.date}} 
                {{entry.paper_rel.start}}-{{entry.paper_rel.end}} 
