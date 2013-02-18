@@ -90,6 +90,47 @@ function AuthorController($scope, Entry, User, Logout) {
 
 function ScheduleController($scope, Room, Entry,User, Logout) {
   var date_tmp = [];
+  
+ $scope.export_data = function() {
+    var result = '';
+    angular.forEach($scope.room_list, function(room) {
+      angular.forEach(room.paper_list, function(paper) {
+        var p_id = parseInt(paper.paper_id);
+        var p_str = ''+p_id;
+        if(p_id < 10) {
+          p_str = '00'+p_id;
+        } else {
+          if(p_id < 100) {
+            p_str = '0'+p_id;
+          }
+        }
+        var author_str = paper.author + '\t' + paper.university;
+        if(paper.author_list) {
+          author_str = paper.author_list[0].name +'\t'
+              + paper.author_list[0].affiliation 
+           
+        }
+        result += room.date + '\t'
+              + room.name + '\t'
+              + room.description+'\t'
+              + paper.start +'\t'
+              + paper.end +'\t'
+              + paper.type.type+'-'+paper.sector.type+p_str+'\t'
+              + paper.title +'\t'
+              + author_str
+              +'\n';
+      });
+    });
+
+    var dataUrl = 'data:text/csv;charset=utf-8,'+encodeURI(result);
+    var link = document.createElement('a');
+    var link_e = angular.element(link);
+    link_e.attr('href',dataUrl);
+    link_e.attr('download','conf.csv');
+    link.click();
+  };
+
+ 
   $scope.date_list = [];
   $scope.selected_room = null;
   $scope.room_list = Room.query(function(r_list) {
@@ -278,14 +319,14 @@ function ReportController($scope, Entry) {
           var sector_exists = false;
           var sector_obj = null;
           angular.forEach(e_t.sectors, function(sector) {
-            if(sector.name == entry.sector) { 
+            if(sector.name == entry.sector.title) { 
               sector_obj = sector;
               sector_exists = true;
               sector.count +=1;
             }
           });
           if(!sector_exists) {
-            sector_obj = {'name':entry.sector,'count':1,'majors':[]};
+            sector_obj = {'name':entry.sector.title,'count':1,'majors':[]};
             e_t.sectors.push(sector_obj);
           }
           var major_exists = false;
@@ -309,16 +350,30 @@ function ReportController($scope, Entry) {
 }
 
 function EntryListController($scope, Entry,$location,Room) {
+  /*
+      Room.query(function(room_list) {
+        angular.forEach(room_list, function(room) {
+          angular.forEach(room.paper_list, function(paper) {
+            Entry.get({id:paper._id}, function(entry) {
+              paper['sector']=entry['sector'];
+              Room.update({id:room._id},
+               angular.extend({},room,{_id:undefined})); 
+              });
+            });
+          });
+      });
+  */
   $scope.entry_list = Entry.query(function(response) {
     angular.forEach(response, function(entry) {
       /*
-      if(entry.type == 'การนำเสนอแบบโปสเตอร์') {
-        entry.type = {type:'P',title:'การนำเสนอแบบโปรเตอร์'};
+      if(entry.type.type == 'P') {
+        entry.type = {type:'P',title:'การนำเสนอแบบโปสเตอร์'};
         Entry.update({id:entry._id},angular.extend({}, 
           entry,{_id:undefined}), function(res) {      
         });
       }
       */
+
       entry['paper_id'] = parseInt(entry.paper_id);
     });
   });
@@ -444,8 +499,15 @@ function EntryController($scope, Entry, $location, $routeParams,User, Logout,Fil
   
   $scope.types = [
     {type:'O',title:'การนำเสนอแบบบรรยาย'},
-    {type:'P',title:'การนำเสนอแบบโปรเตอร์'}
+    {type:'P',title:'การนำเสนอแบบโปสเตอร์'}
   ];
+  
+  $scope.sectors = [
+    {type:'HS',title:'วิทยาศาสตร์สุขภาพ'},
+    {type:'ST',title:'วิทยาศาสตร์และเทคโนโลยี'},
+    {type:'SS',title:'สังคมศาสตร์'}
+  ];
+  
   
 
   var self = this;

@@ -34,23 +34,25 @@
           </a>  
         </span>  
         <span class="pull-right">
+
           <form class="form-inline pull-left"  
              id="file_upload_form" 
              method="post" enctype="multipart/form-data" 
              action="file/upload" 
              target="upload_target" class="form-horizontal"  >  
             <input type="hidden" name="entry"  value="{{entry._id}}" ng-model="entry">                
-            <div class="btn-group">
-              <button class="btn btn-success fileinput-button">
+             <input type="file" name="file" id="file" onchange="angular.element(this).scope().setFile(this)"/ >          
+             <!--
+              <button class="btn btn-success">
                 <i class="icon-plus icon-white"></i>     
                 Select File     
                 <input type="file" name="file" id="file" onchange="angular.element(this).scope().setFile(this)"/ >          
               </button>    
+             -->
               <button type="btn" class="btn btn-primary start" ng-disabled="!theFile">
                 <i class="icon-upload icon-white"></i>          
                 Upload
               </button>    
-            </div>                           
           </form>     
         </span>            
       </div>
@@ -71,7 +73,7 @@
             <dt>สาขาวิชาของผู้วิจัย</dt>
             <dd>{{entry.major}}&nbsp;</dd>
             <dt>กลุ่มสาขาวิชา</dt>
-            <dd>{{entry.sector}}&nbsp;</dd>
+            <dd>{{entry.sector.title}}&nbsp;</dd>
             <dt>ประเภทการนำเสนอ</dt>
             <dd>
                <span ng-show="entry.type.title">

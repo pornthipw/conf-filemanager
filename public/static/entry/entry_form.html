@@ -109,11 +109,8 @@
             <div class="control-group">
               <label class="control-label" for="inputName">กลุ่มสาขาวิชา</label>
               <div class="controls">
-                <select id="inputName" placeholder="sector" ng-model="entry.sector">
-                      <option>ยังไม่ระบุ</option>
-                      <option ng-selected="entry.sector=='กลุ่มสังคมศาสตร์'">กลุ่มสังคมศาสตร์</option>
-                      <option ng-selected="entry.sector=='กลุ่มวิทยาศาสตร์สุขภาพ'">กลุ่มวิทยาศาสตร์สุขภาพ</option>
-                      <option ng-selected="entry.sector=='กลุ่มวิทยาศาสตร์และเทคโนโลยี'">กลุ่มวิทยาศาสตร์และเทคโนโลยี</option>
+                {{entry.sector}}
+                <select ng-model="entry.sector" ng-options="sector.title for sector in sectors">
                 </select>
               </div>            
             </div> 

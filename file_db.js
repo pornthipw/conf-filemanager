@@ -67,7 +67,7 @@ var FileManagerDb = function(config) {
           var gridStore = new mongodb.GridStore(db, fileid, 'r');
           gridStore.open(function(err, gs) {            
             gs.collection(function(err, collection) {
-              collection.find({_id:fileid}).toArray(function(err,docs) {                
+              collection.find({_id:fileid}).toArray(function(err,docs) {                        pool.release(db);
                 var doc = docs[0];                
                 var stream = gs.stream(true);
                 res.setHeader('Content-dispostion', 'attachment;filename='+doc.filename);
@@ -77,7 +77,6 @@ var FileManagerDb = function(config) {
                 });
                 stream.on("end", function() {
                   res.end();
-                  pool.release(db);
                 });
               });
             });
@@ -86,7 +85,6 @@ var FileManagerDb = function(config) {
           pool.release(db);
         }
       }    
-      console.log('getFile '+req.params.id);
     });
   };
   
@@ -95,33 +93,33 @@ var FileManagerDb = function(config) {
     pool.acquire(function(err,db) {
       if(err) {
         console.log('Error :'+err);
-      }
-      console.log('deleteFile '+req.params.id);
-      if (req.params.id.length == 24) {
-          try {
-              fileid  = new mongodb.ObjectID.createFromHexString(req.params.id);
-              mongodb.GridStore.exist(db, fileid , function(err, exist) {   
-                  if(exist) {
-                      var gridStore = new mongodb.GridStore(db, fileid , 'w');
-                      gridStore.open(function(err, gs) {            
-                          gs.unlink(function(err, result) { 
-                              if(!err) {                              
-                                  pool.release(db);                                                        
-                                  res.send(JSON.stringify({'message':req.params.id}));                                     
-                              } else {
-                                  pool.release(db);                                   
-                                  res.send(JSON.stringify({'message':'Error'}));                                                                       
-                              }
-                          });                        
-                      });
-                  } else {
-                      console.log(fileid  +' does not exists');
-                  }
-              });
+      } else {
+        if(req.params.id.length == 24) {
+         try {
+           fileid  = new mongodb.ObjectID.createFromHexString(req.params.id);
+           mongodb.GridStore.exist(db, fileid , function(err, exist) {   
+             if(exist) {
+               var gridStore = new mongodb.GridStore(db, fileid , 'w');
+               gridStore.open(function(err, gs) {            
+                 gs.unlink(function(err, result) { 
+                   if(!err) {                              
+                     pool.release(db);
+                     res.send(JSON.stringify({'message':req.params.id}));
+                   } else {
+                     pool.release(db);
+                     res.send(JSON.stringify({'message':'Error'}));
+                   }
+                 });                        
+               });
+             } else {
+               console.log(fileid  +' does not exists');
+             }
+           });
           } catch (err) {
-              console.log(err);
+             res.send(JSON.stringify({'message':'Error'}));
           }
       }
+  }
     });
   };    
 };
