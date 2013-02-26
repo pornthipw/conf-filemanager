@@ -3,23 +3,35 @@
  <div class="span12">
   <div class="row-fluid">
    <div class="span8">
-  <table class="table table-bordered table-condensed">
-   <tr>
-    <th>Upload Time</th>
-    <th>File</th>
-   </tr>
-   <tr ng-repeat="file in file_list|orderBy:'-uploadDate'">
-    <td>{{file.uploadDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
-    <td>
-     {{file.filename}} 
-     <i class="icon-facetime-video" ng-show="file.presentation"></i>
-     <a href="#/entry/info/{{file.metadata.entry_id}}">
-       {{file.entry.paper_id}}
-     </a>
-    </td>
-   </li>
-  </table>
- </div>
-</div>
+    Page {{currentPage}}/{{totalPage}}
+    <div class="btn-group pull-right" ng-init="currentPage=1">
+      <button class="btn" 
+        ng-click="currentPage=currentPage-1"
+        ng-disabled="currentPage==1">
+        &laquo;</button>
+      <button class="btn"
+        ng-click="currentPage=currentPage+1"
+        ng-disabled="currentPage==totalPage">
+        &raquo;</button>
+    </div>
+    
+    <table class="table table-bordered table-condensed">
+     <tr>
+      <th>Upload Time</th>
+      <th>File</th>
+     </tr>
+     <tr 
+      ng-repeat="file in file_list|orderBy:'-uploadDate'|skip:(currentPage-1)*limit|limitTo:limit">
+      <td>{{file.uploadDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>
+       {{file.filename}} 
+       <i class="icon-facetime-video" ng-show="file.presentation"></i>
+       <a href="#/entry/info/{{file.metadata.entry_id}}">
+         {{file.entry.paper_id}}
+       </a>
+      </td>
+    </table>
+   </div>
+  </div>
  </div>
 </div>

@@ -73,7 +73,9 @@ app.config(function($routeProvider) {
 });
 
 function FileListController($scope,FileDB,Entry) {
+  $scope.limit = 10;
   $scope.file_list = FileDB.query(function(res){ 
+    $scope.totalPage = Math.ceil(res.length/$scope.limit);
     angular.forEach(res,function(file) {
       if(file.metadata.entry_id) {
         Entry.get({id:file.metadata.entry_id},function(entry) {
