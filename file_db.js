@@ -70,8 +70,8 @@ var FileManagerDb = function(config) {
               collection.find({_id:fileid}).toArray(function(err,docs) {                        pool.release(db);
                 var doc = docs[0];                
                 var stream = gs.stream(true);
-                res.setHeader('Content-dispostion', 'attachment;filename='+doc.filename);
-                res.setHeader('Content-type',doc.contentType);
+                res.set('Content-type',doc.contentType);                                
+                res.set('Content-Disposition', 'attachment;filename='+doc.filename);                
                 stream.on("data", function(chunk) {
                   res.write(chunk);
                 });

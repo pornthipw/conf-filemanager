@@ -39,8 +39,16 @@
                   <td>
                    (<a href="#/entry/info/{{paper._id}}">{{paper.paper_id}}</a>)
                    {{paper.title}} <br>
-                   <em>{{paper.author}}</em> 
-                   <strong>{{paper.university}}</strong>
+                   <em>{{paper.author}}</em> <br>                   
+                   <strong>{{paper.university}}</strong><br>
+                   <em>Presentation Files</em>
+                   <ol>
+                     <li ng-repeat="file in paper.files" ng-show="file.presentation">
+                       <a href="file/{{file._id}}" target="_blank">
+                          <i class="icon-file"></i> {{file.filename}}
+                      </a>
+                    </li>
+                   </ol>
                   </td>              
                 </tr>
                 </table>              
