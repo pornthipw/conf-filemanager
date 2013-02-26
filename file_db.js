@@ -66,29 +66,26 @@ var FileManagerDb = function(config) {
         console.log('Error :'+err);
       } else {
         if (req.params.id.length == 24) {
-      //Convert id string to mongodb object ID
           try {
-            fileid = new mongodb.ObjectID.createFromHexString(req.params.id);
-            var gridStore = new mongodb.GridStore(db, fileid, 'r');
-            gridStore.open(function(err, gs) {            
-              gs.collection(function(err, collection) {
-                collection.find({_id:fileid}).toArray(function(err,docs) {
-                  pool.release(db);
-                  var doc = docs[0];                
-                  var stream = gs.stream(true);
-                  res.setHeader('Content-dispostion', 'attachment;filename='+doc.filename);
-                  res.setHeader('Content-type',doc.contentType);
-
-                  stream.on("data", function(chunk) {
-                    res.write(chunk);
-                  });
-                  stream.on("end", function() {
-                    res.end();
-                  });
-               });
-             });
-           });
-         } catch (err) {
+          fileid = new mongodb.ObjectID.createFromHexString(req.params.id);
+          var gridStore = new mongodb.GridStore(db, fileid, 'r');
+          gridStore.open(function(err, gs) {            
+            gs.collection(function(err, collection) {
+              collection.find({_id:fileid}).toArray(function(err,docs) {                        pool.release(db);
+                var doc = docs[0];                
+                var stream = gs.stream(true);
+                res.set('Content-type',doc.contentType);                                
+                res.set('Content-Disposition', 'attachment;filename='+doc.filename);                
+                stream.on("data", function(chunk) {
+                  res.write(chunk);
+                });
+                stream.on("end", function() {
+                  res.end();
+                });
+              });
+            });
+          });
+        } catch (err) {
           pool.release(db);
          }
        }    

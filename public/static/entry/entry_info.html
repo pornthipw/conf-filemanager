@@ -107,12 +107,15 @@
           </span>
           <ul class="well unstyled" ng-hide="file_list.length==0">
             <li ng-repeat="file in file_list">
-              <a href="file/{{file._id}}" target="_blank">
-                 <i class="icon-file"></i> {{file.filename}}
-              </a>
-              <a href="" target="_blank" ng-click="del(file._id)" ng-show="user.user && user.user.role=='admin'"> 
-                 <i class="icon-remove"></i>
-              </a>
+              <label class="checkbox">
+                <input type="checkbox" ng-model="file.presentation" ng-change="update_present()">              
+                <a href="file/{{file._id}}" target="_blank">
+                  <i class="icon-file"></i> {{file.filename}}
+                </a>
+                <a href="" target="_blank" ng-click="del(file._id)" ng-show="user.user && user.user.role=='admin'"> 
+                  <i class="icon-remove"></i>
+                </a>
+              </label>
             </li>
           </ul>
         </div>

@@ -1,0 +1,25 @@
+<div class="row-fluid">
+ <h3>File List</h3>
+ <div class="span12">
+  <div class="row-fluid">
+   <div class="span8">
+  <table class="table table-bordered table-condensed">
+   <tr>
+    <th>Upload Time</th>
+    <th>File</th>
+   </tr>
+   <tr ng-repeat="file in file_list|orderBy:'-uploadDate'">
+    <td>{{file.uploadDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+    <td>
+     {{file.filename}} 
+     <i class="icon-facetime-video" ng-show="file.presentation"></i>
+     <a href="#/entry/info/{{file.metadata.entry_id}}">
+       {{file.entry.paper_id}}
+     </a>
+    </td>
+   </li>
+  </table>
+ </div>
+</div>
+ </div>
+</div>

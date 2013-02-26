@@ -25,6 +25,11 @@ app.filter('hide', function() {
 });
 
 app.config(function($routeProvider) {
+
+  $routeProvider.when('/file', {
+    controller:FileListController, 
+    templateUrl:'static/file_list.html'
+  });
   
   $routeProvider.when('/entry/create', {
     controller:EntryCreateController, 
@@ -66,6 +71,23 @@ app.config(function($routeProvider) {
     templateUrl:'static/index.html'
   });
 });
+
+function FileListController($scope,FileDB,Entry) {
+  $scope.file_list = FileDB.query(function(res){ 
+    angular.forEach(res,function(file) {
+      if(file.metadata.entry_id) {
+        Entry.get({id:file.metadata.entry_id},function(entry) {
+          file.entry = entry;
+          angular.forEach(entry.files, function(e_file) {
+            if(e_file._id == file._id) {
+              file.presentation = e_file.presentation;
+            }
+          });
+        });
+      }
+    });
+  });
+};
 
 function UserCtrl($scope, User, Logout) {
   $scope.user = User.get();
@@ -418,10 +440,41 @@ function EntryCreateController($scope, Entry,$location, $routeParams,User, Logou
 }
 
 function EntryViewController($scope, Entry, $location, $routeParams,User, Logout,FileDB,GridDB,Room) {
+  
+  $scope.update_present = function() {    
+    $scope.entry['files'] = [];
+    
+    angular.forEach($scope.file_list, function(file) {
+      $scope.entry['files'].push(file);
+    });
+    
+    Entry.update({id:$scope.entry._id},angular.extend({}, $scope.entry,{_id:undefined,room_rel:undefined,paper_rel:undefined}),
+      function(result) {      
+        if(result.success) {          
+          Room.query(function(room_list) {
+            angular.forEach(room_list, function(room) {
+              angular.forEach(room.paper_list, function(paper) {
+                if(paper._id == $scope.entry._id) {
+                  angular.extend(paper,$scope.entry, {room_rel:undefined,paper_rel:undefined});
+                  Room.update({id:room._id},
+                    angular.extend({},room,{_id:undefined})); 
+                }
+              });
+            });
+          });          
+        } else {
+          if(result.error == 401) {
+            self.message("You are not authorized to update content");  
+          }
+        }    
+    });
+  };
+  
   $scope.user = User.get(function(response) {
     if (response.user ||$scope.user ) {
       Entry.get({id:$routeParams.id},function(response) {
         $scope.entry = response;        
+        
         Room.query(function(room_list) {
           angular.forEach(room_list,function(room) {
             if(!$scope.entry.room_rel) {
@@ -434,8 +487,17 @@ function EntryViewController($scope, Entry, $location, $routeParams,User, Logout
             }
           });
         });
+        
         var query_obj = {"metadata":{"entry_id":$scope.entry._id}};  
-        $scope.file_list = FileDB.query({query:JSON.stringify(query_obj)});
+        $scope.file_list = FileDB.query({query:JSON.stringify(query_obj)}, function(res) {          
+          angular.forEach($scope.entry.files, function(e_file) {
+            angular.forEach(res, function(file) {
+              if(e_file._id == file._id) {
+                file.presentation = e_file.presentation;
+              }
+            });
+          });
+        });
       });
     
     $scope.limit = 50;
